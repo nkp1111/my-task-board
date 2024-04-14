@@ -7,8 +7,3 @@ interface UserTypeSchema {
   email?: string | FormDataEntryValue | null;
   bio?: string | FormDataEntryValue | null;
 }
-
-interface AlertTypeSchema {
-  message: string,
-  type: "info" | "error" | "success",
-}
