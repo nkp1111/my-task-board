@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { sign } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { JWT_COOKIE_NAME, JWT_EXPIRE_TIME, JWT_SECRET_KEY } from "@/constant/auth";
@@ -7,11 +6,10 @@ import { JWT_COOKIE_NAME, JWT_EXPIRE_TIME, JWT_SECRET_KEY } from "@/constant/aut
 // use this function for authentication inside api routes 
 export default async function sendToken(
   user: any,
-  message: string,
 ) {
 
   // if not user return
-  if (!user) return NextResponse.json({ error: "user is not present" }, { status: 400 })
+  if (!user) return { error: "user is not present" }
 
   // get jwt token
   const token = await sign(
@@ -24,5 +22,5 @@ export default async function sendToken(
   cookies().set(JWT_COOKIE_NAME, token);
 
   // send response back
-  return NextResponse.json({ token, user, success: message || true });
+  return { token };
 }

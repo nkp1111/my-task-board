@@ -1,21 +1,53 @@
 "use client";
 
-import React from 'react'
+import { showAlert } from '@/lib/alert';
+import { redirect } from 'next/navigation';
+import React, { useEffect } from 'react'
+import { useFormState } from "react-dom";
 
 interface SingInFormParams {
-  handleSignIn: (formData: FormData) => Promise<void>
+  handleSignIn: (prevState: any, queryData: any) => Promise<{
+    error: string;
+    user?: undefined;
+    token?: undefined;
+  } | {
+    user: any;
+    error?: undefined;
+    token?: string;
+  }>
 }
 
 export default function SignInForm(
   { handleSignIn }: SingInFormParams
 ) {
+  // NOTE: useFormState takes function return formAction and state
+  // formAction which contain that function execution
+  // state which contains its return
+  const [state, formAction] = useFormState(handleSignIn, null);
+  // handle sign in alert
+  useEffect(() => {
+    if (state) {
+      const { error, user, token } = state;
+      if (error) {
+        showAlert(error || "Something went wrong", "error");
+      }
+      else {
+        showAlert("User created successfully", "success");
+        if (user) localStorage.setItem("user", JSON.stringify(user));
+        redirect("/");
+      }
+      if (!token) showAlert("Problem signing in");
+    }
+  }, [state])
+
   return (
-    <form className=' sm:mx-auto shadow-sm rounded-md bg-gray-900 p-5 w-auto mx-5 sm:min-w-96' action={handleSignIn}>
+    <form className=' sm:mx-auto shadow-sm rounded-md bg-gray-900 p-5 w-auto mx-5 sm:min-w-96' action={formAction}>
 
       <div className="mb-6">
         <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
         <input type="text" id="username" name="username" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Hero123" required />
       </div>
+
 
       <div className="mb-6">
         <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>

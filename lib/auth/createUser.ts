@@ -34,7 +34,7 @@ export const createUser = async (userInfo: UserTypeSchema) => {
 
     // hash password 
     const hashedPassword = await hashPassword(String(password));
-    const user = await User.create({ username, password: hashedPassword });
+    const user = await User.create({ ...userInfo, password: hashedPassword });
     user.password = "hidden";
     return { user, status: 200 }
   } catch (error) {
