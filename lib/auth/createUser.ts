@@ -1,6 +1,7 @@
-import { User } from "@/db/schema/users";
+import { User } from "@/models/users";
 import { hashPassword } from "./passwordOp";
 import { dbConnect } from "@/config/mongoose-client";
+
 
 export const createUser = async (userInfo: UserTypeSchema) => {
   try {

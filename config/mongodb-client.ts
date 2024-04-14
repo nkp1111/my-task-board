@@ -1,6 +1,7 @@
 import clientPromise from '@/config/mongo-connect';
 import { DATABASE } from '@/constant/db';
 
+// connect to database using mongo directly
 export default async function getMongoDB() {
   try {
     const client = await clientPromise;

@@ -28,15 +28,13 @@ export default function SignInForm(
   useEffect(() => {
     if (state) {
       const { error, user, token } = state;
-      if (error) {
-        showAlert(error || "Something went wrong", "error");
-      }
+      if (error) showAlert(error || "Something went wrong", "error");
       else {
         showAlert("User created successfully", "success");
         if (user) localStorage.setItem("user", JSON.stringify(user));
         redirect("/");
       }
-      if (!token) showAlert("Problem signing in");
+      if (!token) showAlert("Problem signing in", "warning");
     }
   }, [state])
 

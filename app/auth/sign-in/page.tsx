@@ -22,7 +22,7 @@ export default function SignIn() {
     }
 
     const userInfo = {
-      username, password, confirmPassword, firstName, lastName, bio, email
+      username, password, confirmPassword, firstName, lastName, bio, email,
     }
 
     const { user, error } = await createUser(userInfo);

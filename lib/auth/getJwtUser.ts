@@ -1,13 +1,14 @@
-import { NextRequest } from 'next/server'
+import { cookies } from "next/headers";
 import { JwtPayload, verify } from 'jsonwebtoken'
-import { User } from '@/db/schema/users';
+
+import { User } from '@/models/users';
 import { JWT_COOKIE_NAME, JWT_SECRET_KEY } from '@/constant/auth';
 
 
 // to get user info from jwt token
-export default async function getJwtUser(request: NextRequest) {
+export default async function getJwtUser() {
   // get token from cookie
-  const token: string = request.cookies.get(JWT_COOKIE_NAME)?.value as string;
+  const token: string = cookies().get(JWT_COOKIE_NAME)?.value as string;
   // get data from token
   const tokenDecrypted = await verify(token, JWT_SECRET_KEY) as JwtPayload;
   // get user by id

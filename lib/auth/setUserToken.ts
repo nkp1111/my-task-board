@@ -1,6 +1,7 @@
 import { sign } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { JWT_COOKIE_NAME, JWT_EXPIRE_TIME, JWT_SECRET_KEY } from "@/constant/auth";
+
+import { COOKIE_EXPIRE_TIME, JWT_COOKIE_NAME, JWT_EXPIRE_TIME, JWT_SECRET_KEY } from "@/constant/auth";
 
 
 // use this function for authentication inside api routes 
@@ -19,7 +20,12 @@ export default async function sendToken(
   )
 
   // set token in cookie
-  cookies().set(JWT_COOKIE_NAME, token);
+  cookies().set(JWT_COOKIE_NAME, token, {
+    httpOnly: true,
+    maxAge: COOKIE_EXPIRE_TIME,
+    sameSite: 'none',
+    secure: true
+  });
 
   // send response back
   return { token };
