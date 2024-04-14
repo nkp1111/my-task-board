@@ -32,9 +32,9 @@ export default function RegisterForm(
       const { error, user, token } = state;
       if (error) showAlert(error || "Something went wrong", "error");
       else {
-        showAlert("User created successfully", "success");
+        showAlert("User created successfully", "success");  // show success alert
         if (user) localStorage.setItem("user", JSON.stringify(user));
-        redirect("/");
+        redirect("/");  // redirect to home page
       }
       if (!token) showAlert("Problem signing in", "warning");
     }

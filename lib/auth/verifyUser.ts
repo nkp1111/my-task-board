@@ -4,7 +4,7 @@ import { dbConnect } from "@/config/mongoose-client";
 import { getUserFormattedData } from "../format/user";
 
 
-export const verifyUser = async (userInfo: UserTypeSchema) => {
+export const verifyUser = async (userInfo: UserTypeWithPasswordSchema) => {
   try {
     const connection = await dbConnect();
     if (!connection) {

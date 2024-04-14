@@ -27,9 +27,8 @@ export default function Register() {
 
     const { user, error } = await createUser(userInfo);
     if (user) {
-      const formattedUser = getUserFormattedData(user);
-      const { error, token } = await sendToken(formattedUser);
-      return { user: formattedUser, token }
+      const { error, token } = await sendToken(user);
+      return { user: user, token }
     } else {
       return { error: String(error) }
     }

@@ -1,7 +1,6 @@
 import SignInForm from '@/components/auth/sign-in-form'
 import sendToken from '@/lib/auth/setUserToken';
 import { verifyUser } from '@/lib/auth/verifyUser';
-import { getUserFormattedData } from '@/lib/format/user';
 import React from 'react'
 
 export default function SignIn() {
