@@ -1,5 +1,4 @@
 import { Schema, models, model } from "mongoose";
-import { hash, compare } from "bcrypt";
 
 const UserSchema = new Schema({
   username: {
@@ -12,6 +11,15 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  firstName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
   bio: {
     type: String,
   },
@@ -23,16 +31,16 @@ const UserSchema = new Schema({
   },
 });
 
-// hash password before saving
-UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) next();
-  this.password = await hash(this.password, 10);
-})
+// // hash password before saving
+// UserSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) next();
+//   this.password = 
+// })
 
-// compare password
-UserSchema.methods.comparePassword = async function (password: string) {
-  return await compare(password, this.password);
-}
+// // compare password
+// UserSchema.methods.comparePassword = async function (password: string) {
+//   return await compare(password, this.password);
+// }
 
 
 const User = models.User || model("User", UserSchema);

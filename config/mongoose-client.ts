@@ -1,8 +1,8 @@
 import mongoose, { Connection } from "mongoose";
 
-const { MONGODB_URL } = process.env;
+const { MONGODB_URI } = process.env;
 
-if (!MONGODB_URL) throw new Error("MONGO_URL is not defined.");
+if (!MONGODB_URI) throw new Error("MONGO_URL is not defined.");
 
 interface Global {
   mongoose: {
@@ -21,7 +21,7 @@ if (!cached) {
 export const dbConnect = async (): Promise<Connection | null> => {
   if (cached.conn) return cached.conn;
 
-  const connection = await mongoose.connect(MONGODB_URL);
+  const connection = await mongoose.connect(MONGODB_URI);
   if (connection) cached.conn = connection.connection;
 
   return cached.conn;
