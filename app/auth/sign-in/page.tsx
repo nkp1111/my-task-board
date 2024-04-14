@@ -1,6 +1,6 @@
 import SignInForm from '@/components/auth/sign-in-form'
-import { createUser } from '@/lib/auth/createUser';
 import sendToken from '@/lib/auth/setUserToken';
+import { verifyUser } from '@/lib/auth/verifyUser';
 import { getUserFormattedData } from '@/lib/format/user';
 import React from 'react'
 
@@ -11,24 +11,19 @@ export default function SignIn() {
     "use server";
     const username = queryData.get("username");
     const password = queryData.get("password");
-    const confirmPassword = queryData.get("confirm_password");
-    const firstName = queryData.get("first_name");
-    const lastName = queryData.get("last_name");
-    const bio = queryData.get("bio");
-    const email = queryData.get("email");
 
-    if (!username || !password || !confirmPassword) {
+    if (!username || !password) {
       return { error: "Please enter all required fields" }
     }
 
     const userInfo = {
-      username, password, confirmPassword, firstName, lastName, bio, email,
+      username, password,
     }
 
-    const { user, error } = await createUser(userInfo);
+    const { user, error } = await verifyUser(userInfo);
     if (user) {
       const { error, token } = await sendToken(user);
-      return { user: getUserFormattedData(user), token }
+      return { user, token }
     } else {
       return { error: String(error) }
     }

@@ -5,5 +5,8 @@ export const getUserFormattedData = (user: any) => {
     lastName: user.lastName,
     bio: user.bio,
     email: user.email,
+    username: user.username,
+    avatar: user.avatar,
+    status: user.status,
   }
 }

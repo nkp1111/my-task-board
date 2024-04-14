@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={outfit.className}>
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={3000}
           limit={3}
           hideProgressBar
           newestOnTop

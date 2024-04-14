@@ -1,6 +1,7 @@
 import { User } from "@/models/users";
 import { hashPassword } from "./passwordOp";
 import { dbConnect } from "@/config/mongoose-client";
+import { getUserFormattedData } from "../format/user";
 
 
 export const createUser = async (userInfo: UserTypeSchema) => {
@@ -36,8 +37,7 @@ export const createUser = async (userInfo: UserTypeSchema) => {
     // hash password 
     const hashedPassword = await hashPassword(String(password));
     const user = await User.create({ ...userInfo, password: hashedPassword });
-    user.password = "hidden";
-    return { user, status: 200 }
+    return { user: getUserFormattedData(user), status: 200 }
   } catch (error) {
     return { error, status: 400 }
   }
