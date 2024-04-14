@@ -37,7 +37,7 @@ export default function Register() {
 
   return (
     <main className='bg-slate-50 w-full flex flex-col'>
-      <h1 className='text-2xl text-center mt-10 mb-2 font-e'>Register</h1>
+      <h1 className='text-3xl text-center mt-10 mb-2 font-medium uppercase'>Register</h1>
       <RegisterForm handleRegister={handleRegister} />
     </main>
   )

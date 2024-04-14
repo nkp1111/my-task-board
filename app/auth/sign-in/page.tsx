@@ -1,7 +1,6 @@
 import SignInForm from '@/components/auth/sign-in-form'
 import sendToken from '@/lib/auth/setUserToken';
 import { verifyUser } from '@/lib/auth/verifyUser';
-import React from 'react'
 
 export default function SignIn() {
 
@@ -31,8 +30,12 @@ export default function SignIn() {
 
   return (
     <main className='bg-slate-50 w-full flex flex-col'>
-      <h1 className='text-2xl text-center mt-10 mb-2 font-e'>Sign In</h1>
+      <h1 className='text-3xl text-center mt-10 mb-2 font-medium uppercase'>Welcome</h1>
+      <p className='text-center mt-1 mb-3 '>Sign in to your account here</p>
+
       <SignInForm handleSignIn={handleSignIn} />
     </main>
   )
 }
+
+
