@@ -20,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={outfit.className}>
+    <html lang="en" className="no-scrollbar">
+      <body className={outfit.className + " flex flex-col min-h-screen"}>
         <ToastContainer
           position="top-center"
           autoClose={3000}

@@ -36,9 +36,14 @@ export default function Register() {
 
 
   return (
-    <main className='bg-slate-50 w-full flex flex-col'>
-      <h1 className='text-3xl text-center mt-10 mb-2 font-medium uppercase'>Register</h1>
-      <RegisterForm handleRegister={handleRegister} />
+    <main className='bg-white w-full flex flex-1 no-scrollbar'>
+      <div className='min-w-64 sm:w-1/3 px-5 sm:px-16 py-5 flex flex-col'>
+        <h1 className='text-2xl mt-10 mb-2 font-bold'>Sign Up</h1>
+        <RegisterForm handleRegister={handleRegister} />
+      </div>
+      <div className='flex-1'>
+
+      </div>
     </main>
   )
 }
