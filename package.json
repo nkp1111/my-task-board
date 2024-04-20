@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "daisyui": "^4.10.1",
+    "daisyui": "^4.10.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.1",
