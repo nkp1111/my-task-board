@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# My Task Board
 
-## Getting Started
+This project is about creating tasks, adding steps to completion, finding task and their completion done by others.
 
-First, run the development server:
+## Table of Contents
+
+- [Features](#features)
+- [Technology](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Folder Structure](#folder-structure)
+- [License](#license)
+- [Acknowledgement](#acknowledgement)
+- [Contact](#contact)
+
+## Features
+
+- User username and password for (jwt based)authentication.
+- Daisy UI for consistent, pre-build styling based on tailwind css.
+
+## Technologies Used
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- DaisyUI
+- Jsonwebtoken
+- mongoose
+- mongo db
+- react-toastify
+- bcrypt
+
+## Installation
+
+Instructions on how to install and set up your project locally.
 
 ```bash
+# Clone the repository
+git clone https://github.com/nkp1111/my-task-board.git
+
+# Navigate to the project directory
+cd my-task-board
+
+# Install dependencies
+npm install
+
+# Run the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Coming soon...
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Folder Structure
 
-## Learn More
+```
+my-task-board/
+│
+├── app/                 # React pages
+│     ├── auth/          # React pages(for authentication)
+├── components/          # React components
+├── config               # config file(db connection)
+├── constant             # constant data 
+├── lib/                 # functions defined here 
+├── models               # db schema 
+├── public/              # Public assets
+├── types                # types definition(used throughout code) defined here
+├── .gitignore           # Git ignore file
+├── package.json         # NPM package configuration
+├── README.md            # Project documentation
+├── tailwind.config.ts   # tailwind configuration
+└── LICENSE              # Project license doc
 
-To learn more about Next.js, take a look at the following resources:
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- This project is licensed under the [MIT License](https://opensource.org/license/mit).
 
-## Deploy on Vercel
+## Acknowledgement
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Coming soon...
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contact
+
+- Neeraj Parmar
+- GitHub [nkp1111](https://github.com/nkp1111)
+- LinkedIn [neeraj](https://www.linkedin.com/in/neeraj-parmar-058591244/)
+- Twitter [@nkp11111507](https://twitter.com/@nkp11111507)
