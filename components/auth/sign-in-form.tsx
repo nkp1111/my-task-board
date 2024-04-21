@@ -89,7 +89,7 @@ export default function SignInForm(
 
 
       <SubmitFormButton
-        className="text-white bg-secondary hover:bg-secondary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2"
+        className="text-white bg-secondary hover:bg-secondary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2 btn"
       >
         Sign In
       </SubmitFormButton>

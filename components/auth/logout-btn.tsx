@@ -1,6 +1,7 @@
 import React from 'react'
 import SubmitFormButton from '../submitFormButton'
 import { logoutUser } from '@/lib/auth/logoutUser';
+import LogoutIcon from '../svg/logout-icon';
 
 export default async function LogoutBtn() {
 
@@ -14,9 +15,9 @@ export default async function LogoutBtn() {
   return (
     <form action={handleLogout}>
       <SubmitFormButton
-        className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+        className="text-secondary hover:text-secondary/80 font-medium rounded-lg w-full p-2 text-center shadow-sm flex items-center text-base"
       >
-        Logout
+        <LogoutIcon className='fill-secondary' /> Logout
       </SubmitFormButton>
     </form>
   )
