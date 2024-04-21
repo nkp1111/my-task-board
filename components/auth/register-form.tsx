@@ -47,7 +47,7 @@ export default function RegisterForm(
   const [showPassword, setShowPassword] = useState({ pass: false, pass2: false });
 
   return (
-    <form className='sm:mx-auto shadow-sm bg-white w-full mx-5 min-w-96' action={formAction}>
+    <form className='mx-auto shadow-sm bg-white sm:min-w-96 w-80 p-2 rounded-md' action={formAction}>
 
       <p className='mb-5 opacity-90'>
         Already a member?
@@ -117,7 +117,7 @@ export default function RegisterForm(
           <span>Additional details</span>
           <span><span className='transition-[rotate] duration-300 ease-linear inline-block rotate-90'>&rarr;</span></span>
         </summary>
-        <aside className="p-2 shadow -content z-[1] w-full mt-3">
+        <aside className="p-2 shadow -content z-[1] w-full mt-3 transition-all duration-300 ease-linear">
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div className='relative'>
               <input
@@ -178,7 +178,7 @@ export default function RegisterForm(
       </details>
 
       <SubmitFormButton
-        className="text-white bg-secondary hover:bg-secondary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-6"
+        className="text-white bg-secondary hover:bg-secondary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2"
       >
         Sign Up
       </SubmitFormButton>
