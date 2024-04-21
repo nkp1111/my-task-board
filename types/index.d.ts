@@ -12,3 +12,10 @@ interface UserTypeWithPasswordSchema extends UserTypeSchema {
   password: string | FormDataEntryValue;
   confirmPassword?: string | FormDataEntryValue | null;
 }
+
+
+interface SVGTypeParams {
+  width?: number;
+  height?: number;
+  className?: string;
+}
