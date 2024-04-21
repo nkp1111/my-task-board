@@ -47,9 +47,9 @@ export default function RegisterForm(
   const [showPassword, setShowPassword] = useState({ pass: false, pass2: false });
 
   return (
-    <form className='mx-auto shadow-sm bg-white sm:min-w-96 w-80 p-2 rounded-md' action={formAction}>
+    <form className='mx-auto shadow-sm bg-white sm:min-w-96 w-64 rounded-md' action={formAction}>
 
-      <p className='mb-5 opacity-90'>
+      <p className='mb-6 opacity-90'>
         Already a member?
         <Link href="/auth/sign-in"
           className='text-secondary'> Log In Now
@@ -65,7 +65,7 @@ export default function RegisterForm(
           onInput={showInputLabel}
           required
         />
-        <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white p-2 rounded-full'>Username</span>
+        <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Username</span>
       </div>
 
       <div className="mb-6 relative">
@@ -81,7 +81,7 @@ export default function RegisterForm(
           className="input input-bordered w-full"
           onInput={showInputLabel}
           required />
-        <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white p-2 rounded-full'>Password</span>
+        <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Password</span>
       </div>
 
       <div className="mb-6 relative">
@@ -97,12 +97,12 @@ export default function RegisterForm(
           className="input input-bordered w-full "
           onInput={showInputLabel}
           required />
-        <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white p-2 rounded-full'>Confirm Password</span>
+        <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Confirm Password</span>
       </div>
 
 
       <details className="">
-        <summary className="m-1 w-full flex justify-between items-center cursor-pointer"
+        <summary className="m-1 w-full flex justify-between items-center cursor-pointer bg-slate-50 py-1"
           onClick={(e) => {
             const childEls = e.currentTarget.children as HTMLCollectionOf<HTMLElement>;
             if (childEls[0].innerText === "Additional details") {
@@ -128,7 +128,7 @@ export default function RegisterForm(
                 required
                 onInput={showInputLabel}
               />
-              <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white p-2 rounded-full'>First name</span>
+              <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>First name</span>
             </div>
             <div className='relative'>
               <input
@@ -139,7 +139,7 @@ export default function RegisterForm(
                 onInput={showInputLabel}
                 required
               />
-              <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white p-2 rounded-full'>Last name</span>
+              <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Last name</span>
             </div>
           </div>
 
@@ -152,7 +152,7 @@ export default function RegisterForm(
               onInput={showInputLabel}
               required
             ></textarea>
-            <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white p-2 rounded-full'>Tell about yourself</span>
+            <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Tell about yourself</span>
           </div>
 
           <div className="mb-6 relative">
@@ -164,7 +164,7 @@ export default function RegisterForm(
               onInput={showInputLabel}
               required
             />
-            <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white p-2 rounded-full'>Email address</span>
+            <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Email address</span>
 
           </div>
 
@@ -172,7 +172,7 @@ export default function RegisterForm(
             <div className="flex items-center h-5">
               <input id="remember" type="checkbox" name="remember" value="" className="w-4 h-4 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300  " />
             </div>
-            <label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 ">I agree with the <a href="#" className="text-blue-600 hover:underline ">terms and conditions</a>.</label>
+            <label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 ">I agree with the <a href="#" className="text-secondary hover:underline ">terms and conditions</a>.</label>
           </div>
         </aside>
       </details>

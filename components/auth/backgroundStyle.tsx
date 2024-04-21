@@ -28,8 +28,8 @@ export default function BackgroundStyle() {
               className='absolute top-0 left-0 w-full object-center object-cover'
             />
           </div>
-          <div className='text-start text-white bg-black/20 p-2 md:p-0 md:bg-transparent absolute bottom-20 lg:left-1/2 lg:-translate-x-1/2 left-10 right-10 filter backdrop-blur-sm'>
-            <h3 className='md:text-slate-300'>{data.title}</h3>
+          <div className='text-start text-white bg-black/20 p-2 rounded-sm md:bg-transparent absolute bottom-20 lg:left-1/2 lg:-translate-x-1/2 left-10 right-10 filter backdrop-blur-sm'>
+            <h3 className='md:text-slate-50'>{data.title}</h3>
             <p className='font-medium sm:text-xl text-lg mt-2 md:mx-auto'>{data.description}</p>
           </div>
         </article>

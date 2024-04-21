@@ -2,10 +2,13 @@
 
 import { showAlert } from '@/lib/alert';
 import { redirect } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useFormState } from "react-dom";
 import SubmitFormButton from '../submitFormButton';
 import Link from 'next/link';
+import { showInputLabel } from '@/lib/general/form';
+import EyeIcon from '../svg/eye-icon';
+import EyeCloseIcon from '../svg/eye-close-icon';
 
 interface SingInFormParams {
   handleSignIn: (prevState: any, queryData: any) => Promise<{
@@ -41,28 +44,52 @@ export default function SignInForm(
     }
   }, [state])
 
+  const [showPassword, setShowPassword] = useState({ pass: false });
+
   return (
-    <form className='sm:mx-auto shadow-sm rounded-md bg-gray-900 p-5 w-auto mx-5 sm:min-w-96' action={formAction}>
+    <form className='sm:mx-auto shadow-sm bg-white w-64 mx-5 sm:min-w-96' action={formAction}>
 
-      <div className="mb-6">
-        <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-        <input type="text" id="username" name="username" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Hero123" required />
+      <p className='mb-6 opacity-90'>
+        New to <em>My Task Board</em>?
+        <Link href="/auth/register"
+          className='text-secondary'> Sign Up Now
+        </Link>
+      </p>
+
+
+      <div className="mb-6 relative">
+        <input
+          type="text"
+          name={"username"}
+          placeholder="Username"
+          className="input input-bordered w-full"
+          onInput={showInputLabel}
+          required
+        />
+        <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Username</span>
       </div>
 
 
-      <div className="mb-6">
-        <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-        <input type="password" id="password" name="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="•••••••••" required />
+      <div className="mb-6 relative">
+        <div className='absolute top-0 right-2 h-full w-8 flex justify-center items-center cursor-pointer'
+          onClick={() => setShowPassword((pre) => ({ ...pre, pass: !pre.pass }))}
+        >
+          {showPassword.pass ? <EyeIcon /> : <EyeCloseIcon />}
+        </div>
+        <input
+          type={showPassword.pass ? "text" : "password"}
+          name={"password"}
+          placeholder="Password"
+          className="input input-bordered w-full"
+          onInput={showInputLabel}
+          required />
+        <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Password</span>
       </div>
 
-      <Link href="/auth/register"
-        className='text-blue-500 underline'>
-        New to <span> <em>My Task Board</em></span>?
-      </Link>
 
 
       <SubmitFormButton
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center mt-6"
+        className="text-white bg-secondary hover:bg-secondary/90 focus:outline-none font-medium rounded-full text-sm w-full px-5 py-3 text-center mt-2"
       >
         Sign In
       </SubmitFormButton>
