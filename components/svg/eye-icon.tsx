@@ -1,8 +1,8 @@
 import React from 'react'
 
-export default function EyeIcon() {
+export default function EyeIcon({ width = 24, height = 24, className }: SVGTypeParams) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" className='fill-gray-500' version="1.1" id="Capa_1" width="24px" height="24px" viewBox="0 0 519.578 519.578">
+    <svg xmlns="http://www.w3.org/2000/svg" className={'fill-gray-500 ' + className} version="1.1" id="Capa_1" width={24} height={24} viewBox="0 0 519.578 519.578">
       <g>
         <g>
           <path d="M513.095,245.101c0,0-140.683-139.842-253.291-139.842c-112.608,0-253.292,139.842-253.292,139.842    c-8.645,8.109-8.721,21.42,0,29.375c0,0,140.684,139.843,253.292,139.843c112.608,0,253.291-139.843,253.291-139.843    C521.663,266.368,521.816,253.134,513.095,245.101z M260.875,372.397c-61.889,0-112.149-50.185-112.149-112.149    s50.184-112.149,112.149-112.149c61.965,0,112.148,50.26,112.148,112.149S322.763,372.397,260.875,372.397z" />

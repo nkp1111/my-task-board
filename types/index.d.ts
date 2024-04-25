@@ -19,3 +19,23 @@ interface SVGTypeParams {
   height?: number;
   className?: string;
 }
+
+
+type TaskTypeParams = {
+  id: number;
+  name: string;
+  description: string;
+  icon: any;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  completedAt: string;
+}
+
+interface GoalTypeParams {
+  name: string;
+  _id: string;
+  tasks: TaskTypeParams[];
+  createdAt?: string;
+  updatedAt?: string;
+}

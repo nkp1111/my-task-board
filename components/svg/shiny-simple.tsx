@@ -1,8 +1,8 @@
 import React from 'react'
 
-export default function ShinySimple() {
+export default function ShinySimple({ width = 24, height = 24, className }: SVGTypeParams) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1440" height="560" preserveAspectRatio="none" viewBox="0 0 1440 560">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width={width} height={height} preserveAspectRatio="none" viewBox="0 0 1440 560" className={className}>
       <g mask="url(&quot;#SvgjsMask1000&quot;)" fill="none">
         <rect width="1440" height="560" x="0" y="0" fill="rgba(21, 67, 96, 1)"></rect>
         <path d="M0,459.21C90.425,470.539,196.51,471.666,263.222,409.581C329.76,347.658,298.142,235.909,331.002,151.163C361.093,73.557,439.298,18.621,446.949,-64.262C455.405,-155.867,439.835,-259.683,374.944,-324.891C310.566,-389.584,204.645,-373.131,116.401,-396.426C31.166,-418.927,-52.891,-491.781,-134.917,-459.485C-217.613,-426.925,-230.009,-315.737,-278.199,-241.061C-318.431,-178.717,-377.72,-128.969,-394.801,-56.764C-412.751,19.116,-406.106,99.779,-375.824,171.633C-345.021,244.723,-286.984,300.34,-223.993,348.54C-156.487,400.195,-84.343,448.643,0,459.21" fill="#11364e"></path>
