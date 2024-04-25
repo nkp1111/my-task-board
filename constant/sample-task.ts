@@ -5,7 +5,7 @@ export const sampleGoal = {
   _id: "1",
   tasks: [
     {
-      id: 1,
+      _id: "1",
       name: "Task in Progress",
       description: "",
       icon: defaultIconsArray[0].svg,
@@ -15,7 +15,7 @@ export const sampleGoal = {
       completedAt: "",
     },
     {
-      id: 2,
+      _id: "2",
       name: "Task Completed",
       description: "",
       icon: defaultIconsArray[1].svg,
@@ -25,7 +25,7 @@ export const sampleGoal = {
       completedAt: "",
     },
     {
-      id: 3,
+      _id: "3",
       name: "Task won't do",
       description: "",
       icon: defaultIconsArray[6].svg,
@@ -35,7 +35,7 @@ export const sampleGoal = {
       completedAt: "",
     },
     {
-      id: 4,
+      _id: "4",
       name: "Task To Do",
       description: "Work on a challenge. Learn Typescript.",
       icon: defaultIconsArray[2].svg,

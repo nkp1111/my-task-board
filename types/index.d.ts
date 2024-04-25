@@ -22,7 +22,7 @@ interface SVGTypeParams {
 
 
 type TaskTypeParams = {
-  id: number;
+  _id: string;
   name: string;
   description: string;
   icon: any;
