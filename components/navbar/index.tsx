@@ -9,9 +9,9 @@ export default async function Navbar() {
   const { user, error } = await getUser(); // get user info
   return (
     <nav className="border-gray-200 bg-gray-50 border-b">
-      <div className="flex flex-wrap items-center justify-between mx-auto sm:px-16 px-8 py-4">
+      <div className="flex flex-wrap items-center justify-between mx-auto md:px-16 sm:px-8 px-4 py-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="self-center text-2xl font-semibold whitespace-nowrap uppercase">MY TASK BOARD</span>
+          <span className="self-center text-2xl font-semibold whitespace-nowrap uppercase">TASK BOARD</span>
         </a>
 
         {/* for small screen  */}
