@@ -29,6 +29,8 @@ const UserSchema = new Schema({
   status: {
     type: String,
   },
+}, {
+  timestamps: true
 });
 
 // // hash password before saving

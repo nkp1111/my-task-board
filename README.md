@@ -13,6 +13,11 @@ This project is about creating tasks, adding steps to completion, finding task a
 - [Acknowledgement](#acknowledgement)
 - [Contact](#contact)
 
+## Links
+
+- [github link](https://github.com/nkp1111/my-task-board)
+- [live server link](https://my-task-board-two.vercel.app/)
+
 ## Features
 
 - User username and password for (jwt based)authentication.

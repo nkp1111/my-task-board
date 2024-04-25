@@ -1,4 +1,4 @@
-import { iconsArray } from "./sample-icons"
+import { iconsArray, defaultIconsArray } from "./sample-icons"
 
 export const sampleGoal = {
   name: "My Task Board",
@@ -8,7 +8,7 @@ export const sampleGoal = {
       id: 1,
       name: "Task in Progress",
       description: "",
-      icon: iconsArray[6].svg,
+      icon: defaultIconsArray[0].svg,
       status: "in progress",
       createdAt: "",
       updatedAt: "",
@@ -18,7 +18,7 @@ export const sampleGoal = {
       id: 2,
       name: "Task Completed",
       description: "",
-      icon: iconsArray[2].svg,
+      icon: defaultIconsArray[1].svg,
       status: "completed",
       createdAt: "",
       updatedAt: "",
@@ -28,7 +28,7 @@ export const sampleGoal = {
       id: 3,
       name: "Task won't do",
       description: "",
-      icon: iconsArray[6].svg,
+      icon: defaultIconsArray[6].svg,
       status: "not do",
       createdAt: "",
       updatedAt: "",
@@ -37,8 +37,8 @@ export const sampleGoal = {
     {
       id: 4,
       name: "Task To Do",
-      description: "",
-      icon: iconsArray[6].svg,
+      description: "Work on a challenge. Learn Typescript.",
+      icon: defaultIconsArray[2].svg,
       status: "not started",
       createdAt: "",
       updatedAt: "",
