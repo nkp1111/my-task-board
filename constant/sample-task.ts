@@ -1,5 +1,37 @@
 import { iconsArray, defaultIconsArray } from "./sample-icons"
 
+
+
+export const statusArray: TaskStatusTypeParams[] = [
+  {
+    _id: "1",
+    title: "in progress",
+    svg: iconsArray[6].svg,
+    color: "yellow",
+  },
+  {
+    _id: "2",
+    title: "completed",
+    svg: iconsArray[3].svg,
+    color: "green",
+  },
+  {
+    _id: "3",
+    title: "not do",
+    svg: iconsArray[7].svg,
+    color: "red",
+  },
+  {
+    _id: "4",
+    title: "not started",
+    svg: "",
+    color: "slate",
+  },
+];
+
+
+
+
 export const sampleGoal = {
   name: "My Task Board",
   _id: "1",
@@ -9,7 +41,7 @@ export const sampleGoal = {
       name: "Task in Progress",
       description: "",
       icon: defaultIconsArray[0].svg,
-      status: "in progress",
+      status: statusArray[0].title,
       createdAt: "",
       updatedAt: "",
       completedAt: "",
@@ -19,7 +51,7 @@ export const sampleGoal = {
       name: "Task Completed",
       description: "",
       icon: defaultIconsArray[1].svg,
-      status: "completed",
+      status: statusArray[1].title,
       createdAt: "",
       updatedAt: "",
       completedAt: "",
@@ -29,7 +61,7 @@ export const sampleGoal = {
       name: "Task won't do",
       description: "",
       icon: defaultIconsArray[6].svg,
-      status: "not do",
+      status: statusArray[2].title,
       createdAt: "",
       updatedAt: "",
       completedAt: "",
@@ -39,7 +71,7 @@ export const sampleGoal = {
       name: "Task To Do",
       description: "Work on a challenge. Learn Typescript.",
       icon: defaultIconsArray[2].svg,
-      status: "not started",
+      status: statusArray[3].title,
       createdAt: "",
       updatedAt: "",
       completedAt: "",

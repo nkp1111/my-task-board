@@ -21,6 +21,14 @@ interface SVGTypeParams {
 }
 
 
+type TaskStatusTypeParams = {
+  _id: string;
+  title: string;
+  svg: any;
+  color: string;
+}
+
+
 type TaskTypeParams = {
   _id: string;
   name: string;
