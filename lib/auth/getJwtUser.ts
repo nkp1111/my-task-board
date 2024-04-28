@@ -9,11 +9,11 @@ import { JWT_COOKIE_NAME, JWT_SECRET_KEY } from '@/constant/auth';
 export default async function getJwtUser() {
   // get token from cookie
   const token: string = cookies().get(JWT_COOKIE_NAME)?.value as string;
-  if (!token) return;
+  if (!token) return null;
 
   // get data from token
   const tokenDecrypted = await verify(token, JWT_SECRET_KEY) as JwtPayload;
-  if (!tokenDecrypted) return;
+  if (!tokenDecrypted) return null;
 
   // TODO: handle token not found properly
 
