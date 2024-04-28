@@ -17,7 +17,7 @@ export const statusArray: TaskStatusTypeParams[] = [
   },
   {
     _id: "3",
-    title: "not do",
+    title: "won't do",
     svg: iconsArray[7].svg,
     color: "red",
   },
