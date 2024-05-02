@@ -1,4 +1,5 @@
 interface UserTypeSchema {
+  _id?: string;
   username: string | FormDataEntryValue;
   firstName?: string | FormDataEntryValue | null;
   lastName?: string | FormDataEntryValue | null;

@@ -4,7 +4,7 @@ import { models, model, Schema } from "mongoose";
 const TaskSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
     type: String,
@@ -19,7 +19,7 @@ const TaskSchema = new Schema({
   completedAt: {
     type: Date,
   },
-  processNote: {
+  note: {
     type: String,
   }
 }, {
@@ -30,8 +30,10 @@ const TaskSchema = new Schema({
 const GoalSchema = new Schema({
   name: {
     type: String,
-    length: 3,
     required: true,
+    unique: true,
+    minlength: 3,
+    maxlength: 255
   },
   userId: {
     type: Schema.Types.ObjectId,
@@ -45,6 +47,8 @@ const GoalSchema = new Schema({
   timestamps: true,
 })
 
+GoalSchema.index({ userId: 1, name: 1 }, { unique: true });
+
 const Goal = models.Goal || model("Goal", GoalSchema);
 
-export default Goal;
+export { Goal };

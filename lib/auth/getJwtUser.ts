@@ -20,9 +20,9 @@ export default async function getJwtUser() {
 
   // get user by id
   const currentUserId: string = tokenDecrypted?.id || "";
-  let user: (object | null) = null;
+  let user: (UserTypeSchema | null) = null;
   if (currentUserId) {
-    user = await User.findById(currentUserId)
+    user = await User.findById(currentUserId);
   }
   return user;
 }
