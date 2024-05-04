@@ -34,6 +34,7 @@ This project is about creating tasks, adding steps to completion, finding task a
 - mongo db
 - react-toastify
 - bcrypt
+- zod
 
 ## Installation
 
