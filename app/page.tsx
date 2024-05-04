@@ -1,5 +1,6 @@
 import Logo from "@/components/logo"
 import TaskManager from "@/components/task-manager";
+import { handleSaveGoal } from "@/lib/user/handleSaveGoal";
 import editSvg from "@/public/assets/Edit_duotone.svg"
 import Image from "next/image";
 
@@ -7,7 +8,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center bg-slate-50 py-2 md:px-16 sm:px-8 px-4">
       <div className="flex items-start gap-3">
-        <Logo />
+        <Logo handleSaveGoal={handleSaveGoal} />
         <div className="flex flex-col gap-3">
           <h1 className="md:text-5xl text-4xl">My Task Board</h1>
           <p>Tasks to keep organized</p>

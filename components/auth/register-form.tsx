@@ -125,7 +125,6 @@ export default function RegisterForm(
                 placeholder="First name"
                 className="input input-bordered w-full"
                 name={"first_name"}
-                required
                 onInput={showInputLabel}
               />
               <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>First name</span>
@@ -137,7 +136,6 @@ export default function RegisterForm(
                 className="input input-bordered w-full"
                 name={"last_name"}
                 onInput={showInputLabel}
-                required
               />
               <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Last name</span>
             </div>
@@ -150,7 +148,6 @@ export default function RegisterForm(
               className="textarea textarea-bordered w-full"
               name={"bio"}
               onInput={showInputLabel}
-              required
             ></textarea>
             <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Tell about yourself</span>
           </div>
@@ -162,7 +159,6 @@ export default function RegisterForm(
               className="input input-bordered w-full"
               name={"email"}
               onInput={showInputLabel}
-              required
             />
             <span className='absolute top-0 left-0 -translate-y-1/2 hidden bg-white px-2 rounded-full'>Email address</span>
 
