@@ -11,7 +11,7 @@ export default function TaskManager({ currentGoalId }: { currentGoalId?: string 
   }
   return (
     <div className='mt-5'>
-      <ViewTask tasks={goalDetail.tasks} />
+      <ViewTask goal={goalDetail} />
       <AddTask />
     </div>
   )

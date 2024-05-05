@@ -5,19 +5,19 @@ import TaskFormStatus from './task-form-status';
 
 
 interface TaskFormTypeParams {
-  taskData?: TaskTypeParams | null;
+  taskDataId?: string;
   closeTaskForm: () => void;
   taskFormOpen: boolean;
 }
 
-export default function TaskForm({ taskFormOpen, taskData, closeTaskForm }: TaskFormTypeParams) {
+export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: TaskFormTypeParams) {
 
   // initialize task data
   const [taskDataInForm, setTaskDataInForm] = useState({
-    taskName: taskData?.name || "",
-    description: taskData?.description || "",
-    icon: taskData?.icon || "",
-    status: taskData?.status || "not started",
+    name: "",
+    description: "",
+    icon: "",
+    status: "not started",
   });
 
   // handle status change
@@ -36,15 +36,28 @@ export default function TaskForm({ taskFormOpen, taskData, closeTaskForm }: Task
 
   // update task data on change
   useEffect(() => {
-    if (taskData?._id) {
+    if (taskDataId) {
+      const allTasks: TaskTypeParams[] = JSON.parse(localStorage.getItem("tasks") || "[]");
+      const currentTask = allTasks.find(task => task._id === taskDataId);
       setTaskDataInForm(() => ({
-        taskName: taskData?.name || "",
-        description: taskData?.description || "",
-        icon: taskData?.icon || "",
-        status: taskData?.status || "not started",
+        name: currentTask?.name || "",
+        description: currentTask?.description || "",
+        icon: currentTask?.icon || "",
+        status: currentTask?.status || "not started",
       }))
     }
-  }, [taskData]);
+  }, [taskDataId]);
+
+
+  useEffect(() => {
+    console.log(taskDataInForm)
+    const allTasks: TaskTypeParams[] = JSON.parse(localStorage.getItem("tasks") || "[]");
+    const updatedTasks = allTasks.map(task => {
+      if (task._id === taskDataId) return { ...task, ...taskDataInForm };
+      else return task;
+    })
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  }, [taskDataInForm, taskDataId]);
 
 
   return (
@@ -72,8 +85,8 @@ export default function TaskForm({ taskFormOpen, taskData, closeTaskForm }: Task
               placeholder="Task name"
               className="input border-2 bg-white border-slate-200 focus:border-blue-500 w-full focus:shadow-none focus:outline-none"
               name="task_name"
-              value={taskDataInForm.taskName}
-              onChange={(e) => setTaskDataInForm((pre) => ({ ...pre, taskName: e.target.value }))}
+              value={taskDataInForm.name}
+              onChange={(e) => setTaskDataInForm((pre) => ({ ...pre, name: e.target.value }))}
             />
           </label>
 

@@ -5,28 +5,45 @@ import React, { useEffect, useState } from 'react'
 import { iconsArray, defaultIconsArray } from "@/constant/sample-icons"
 import TaskForm from './task-form';
 import { statusArray } from '@/constant/sample-task';
+import { useCookies } from 'react-cookie';
 
-export default function ViewTask({ tasks }: { tasks: TaskTypeParams[] }) {
+export default function ViewTask({ goal }: { goal: GoalTypeParams }) {
+
+  // set goal and tasks data initially
+  const [cookies, setCookie] = useCookies(['goal_id']);
+  const [tasks, setTasks] = useState<TaskTypeParams[]>([]);
   const [taskFormOpen, setTaskFormOpen] = useState(false);
-  const [currentTask, setCurrentTask] = useState<TaskTypeParams | null>(null);
+  const [currentTaskId, setCurrentTaskId] = useState<string>("");
+
   const handleCurrentTask = (taskId: string) => {
     const newTask = tasks.find(task => task._id === taskId);
-    if (newTask) setCurrentTask(newTask);
+    if (newTask) setCurrentTaskId(newTask._id);
   }
   const closeTaskForm = () => setTaskFormOpen(false);
 
+
   useEffect(() => {
-    if (currentTask?._id) {
+    setCookie("goal_id", goal._id);
+    if (localStorage) {
+      const goalName = localStorage.getItem("goal_name");
+      const tasks = localStorage.getItem("tasks");
+      if (goalName !== goal.name && (!tasks || !Array.isArray(JSON.parse(tasks)))) {
+        localStorage.setItem("goal_name", goal.name);
+        localStorage.setItem("tasks", JSON.stringify(goal.tasks));
+      } else {
+        setTasks(JSON.parse(tasks || "[]"));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (currentTaskId) {
       setTaskFormOpen(true)
     }
-  }, [currentTask?._id]);
+  }, [currentTaskId]);
 
   useEffect(() => {
-    if (taskFormOpen) { }
-    else {
-      setCurrentTask(null);
-    }
-
+    if (!taskFormOpen) setCurrentTaskId("")
   }, [taskFormOpen]);
 
 
@@ -38,12 +55,12 @@ export default function ViewTask({ tasks }: { tasks: TaskTypeParams[] }) {
         return <SingleTaskArticle
           key={task._id}
           task={task}
-          currentTask={currentTask}
+          currentTaskId={currentTaskId}
           handleCurrentTask={handleCurrentTask}
         />
       })}
 
-      <TaskForm taskData={currentTask} closeTaskForm={closeTaskForm} taskFormOpen={taskFormOpen} />
+      <TaskForm taskDataId={currentTaskId} closeTaskForm={closeTaskForm} taskFormOpen={taskFormOpen} />
     </div>
   )
 }
@@ -51,8 +68,8 @@ export default function ViewTask({ tasks }: { tasks: TaskTypeParams[] }) {
 
 
 export function SingleTaskArticle(
-  { task, currentTask, handleCurrentTask }:
-    { task: TaskTypeParams, handleCurrentTask: (taskId: string) => void, currentTask: TaskTypeParams | null }
+  { task, currentTaskId, handleCurrentTask }:
+    { task: TaskTypeParams, handleCurrentTask: (taskId: string) => void, currentTaskId: string }
 ) {
 
   const currentStatus = statusArray.find(status => status.title === task.status);
@@ -66,7 +83,7 @@ export function SingleTaskArticle(
   return (
     <article
       key={task._id}
-      className={`w-full rounded-xl p-5 flex items-start gap-5 mb-5 bg-opacity-90 cursor-pointer bg-${currentStatus.color}-300 ${currentTask?._id === task._id && "border-2 border-blue-500"}`}
+      className={`w-full rounded-xl p-5 flex items-start gap-5 mb-5 bg-opacity-90 cursor-pointer bg-${currentStatus.color}-300 ${currentTaskId === task._id && "border-2 border-blue-500"}`}
       onClick={() => handleCurrentTask(task._id)}
     >
       <div role="button" className='cursor-pointer tooltip bg-white rounded-lg h-10 w-10 flex items-center justify-center' aria-label={"Add task"}>
