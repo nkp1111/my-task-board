@@ -1,28 +1,54 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { iconsArray, defaultIconsArray } from '@/constant/sample-icons';
 import Image from 'next/image';
 import TaskFormStatus from './task-form-status';
 
 
 interface TaskFormTypeParams {
-  taskData?: any;
-  openTaskForm?: boolean;
+  taskData?: TaskTypeParams | null;
   closeTaskForm: () => void;
-  removeCurrentTask?: () => void;
+  taskFormOpen: boolean;
 }
 
-export default function TaskForm({ taskData, removeCurrentTask, openTaskForm = false, closeTaskForm }: TaskFormTypeParams) {
+export default function TaskForm({ taskFormOpen, taskData, closeTaskForm }: TaskFormTypeParams) {
+
+  // initialize task data
+  const [taskDataInForm, setTaskDataInForm] = useState({
+    taskName: taskData?.name || "",
+    description: taskData?.description || "",
+    icon: taskData?.icon || "",
+    status: taskData?.status || "not started",
+  });
+
+  // handle status change
+  const handleTaskStatusChange = (newStatus: string) => {
+    setTaskDataInForm((pre) => ({ ...pre, status: newStatus }));
+  }
+
+  // add css for when modal is open
   useEffect(() => {
-    if (openTaskForm) {
+    if (taskFormOpen) {
       document.querySelector("body")?.classList.add("overflow-hidden");
     } else {
       document.querySelector("body")?.classList.remove("overflow-hidden");
-      if (removeCurrentTask) removeCurrentTask();
     }
-  }, [openTaskForm, removeCurrentTask]);
+  }, [taskFormOpen]);
+
+  // update task data on change
+  useEffect(() => {
+    if (taskData?._id) {
+      setTaskDataInForm(() => ({
+        taskName: taskData?.name || "",
+        description: taskData?.description || "",
+        icon: taskData?.icon || "",
+        status: taskData?.status || "not started",
+      }))
+    }
+  }, [taskData]);
+
 
   return (
-    <div className={`fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50 ${openTaskForm ? "block" : "hidden"}`}>
+    <div className={`fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50 ${taskFormOpen ? "block" : "hidden"}`}>
       <section className="flex lg:w-1/2 2xl:w-2/5 w-auto absolute top-5 right-5 bottom-5 bg-white rounded-lg p-5 flex-col overflow-y-auto no-scrollbar">
 
         <div className="flex justify-between items-center ">
@@ -46,6 +72,8 @@ export default function TaskForm({ taskData, removeCurrentTask, openTaskForm = f
               placeholder="Task name"
               className="input border-2 bg-white border-slate-200 focus:border-blue-500 w-full focus:shadow-none focus:outline-none"
               name="task_name"
+              value={taskDataInForm.taskName}
+              onChange={(e) => setTaskDataInForm((pre) => ({ ...pre, taskName: e.target.value }))}
             />
           </label>
 
@@ -53,7 +81,9 @@ export default function TaskForm({ taskData, removeCurrentTask, openTaskForm = f
             <div className="label">
               <span className="label-text">Description</span>
             </div>
-            <textarea className="textarea border-2 bg-white border-slate-200 focus:border-blue-500 w-full focus:shadow-none focus:outline-none h-32 text-base" placeholder="Enter a short description"></textarea>
+            <textarea className="textarea border-2 bg-white border-slate-200 focus:border-blue-500 w-full focus:shadow-none focus:outline-none h-32 text-base" placeholder="Enter a short description"
+              value={taskDataInForm.description}
+              onChange={(e) => setTaskDataInForm((pre) => ({ ...pre, description: e.target.value }))}></textarea>
           </label>
 
           <div className="form-control w-full mt-4 flex">
@@ -64,8 +94,14 @@ export default function TaskForm({ taskData, removeCurrentTask, openTaskForm = f
               {defaultIconsArray.map(icon => (
                 <label key={icon.id} className='border  w-12 h-12 flex items-center justify-center border-slate-200 cursor-pointer rounded-md relative'
                 >
-                  <input type="radio" name="icon"
-                    className="radio hidden peer" title={icon.title} />
+                  <input
+                    type="radio"
+                    name="icon"
+                    className="radio hidden peer"
+                    title={icon.title}
+                    checked={taskDataInForm.icon === icon.title}
+                    onChange={() => setTaskDataInForm((pre) => ({ ...pre, icon: icon.title }))}
+                  />
                   <div className='w-full h-full absolute top-0 left-0 bg-slate-200 p-3 peer-checked:bg-yellow-300/80 transition-[bg] duration-300 ease-linear tooltip rounded-md'
                     data-tip={`${icon.title}`}>
                     <Image
@@ -83,7 +119,7 @@ export default function TaskForm({ taskData, removeCurrentTask, openTaskForm = f
               <span className="label-text">Status</span>
             </div>
             <div className='grid grid-cols-2 w-full gap-2'>
-              <TaskFormStatus />
+              <TaskFormStatus statusSelected={taskDataInForm.status} handleTaskStatusChange={handleTaskStatusChange} />
             </div>
           </div>
 

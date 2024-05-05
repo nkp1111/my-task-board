@@ -5,8 +5,17 @@ import { statusArray } from '@/constant/sample-task'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
-export default function TaskFormStatus() {
-  const [statusSelected, setStatusSelected] = useState("");
+
+interface TaskFormStatusParams {
+  statusSelected: string,
+  handleTaskStatusChange: (newStatus: string) => void
+}
+
+
+export default function TaskFormStatus(
+  { statusSelected, handleTaskStatusChange }: TaskFormStatusParams
+) {
+
   return (
     <>
       {statusArray.map(status => (
@@ -20,8 +29,9 @@ export default function TaskFormStatus() {
             className="radio hidden peer"
             title={status.title}
             onChange={(e) => {
-              if (e.currentTarget.checked) setStatusSelected(() => status.title);
+              if (e.currentTarget.checked) handleTaskStatusChange(status.title);
             }}
+            checked={status.title === statusSelected}
           />
 
           <article className='border-2 border-slate-300 p-1 peer-checked:border-blue-500/80 transition-[bg] duration-300 ease-linear capitalize w-full rounded-xl items-center flex gap-3'>

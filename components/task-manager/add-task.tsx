@@ -24,7 +24,7 @@ export default function AddTask() {
         <span className='font-bold text-lg'>Add new task</span>
       </div>
 
-      <TaskForm openTaskForm={taskFormOpen} closeTaskForm={handleFormClose} />
+      <TaskForm closeTaskForm={handleFormClose} taskFormOpen={taskFormOpen} />
     </div>
   )
 }
