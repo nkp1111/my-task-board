@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { iconsArray } from "@/constant/sample-icons"
+import { iconsArray, defaultIconsArray } from "@/constant/sample-icons"
 import TaskForm from './task-form';
 import { statusArray } from '@/constant/sample-task';
 
@@ -58,6 +58,11 @@ export function SingleTaskArticle(
   const currentStatus = statusArray.find(status => status.title === task.status);
   if (!currentStatus) return null;
 
+  let taskIcon;
+  if (task.icon) {
+    taskIcon = defaultIconsArray.find((icon) => icon.title === task.icon);
+  }
+
   return (
     <article
       key={task._id}
@@ -65,9 +70,9 @@ export function SingleTaskArticle(
       onClick={() => handleCurrentTask(task._id)}
     >
       <div role="button" className='cursor-pointer tooltip bg-white rounded-lg h-10 w-10 flex items-center justify-center' aria-label={"Add task"}>
-        {task.icon ? (
+        {taskIcon ? (
           <Image
-            src={task.icon}
+            src={taskIcon.svg}
             alt={"add task"}
             width={24}
             height={24}
