@@ -103,13 +103,15 @@ export function SingleTaskArticle(
       </div>
 
       <div className={`ms-auto bg-${currentStatus.color}-500 rounded-lg h-10 w-10  items-center justify-center ${currentStatus.svg ? "inline-flex" : "hidden"}`}>
-        <Image
-          src={currentStatus.svg}
-          alt={"add task"}
-          width={24}
-          height={24}
-          className=''
-        />
+        {currentStatus.svg && (
+          <Image
+            src={currentStatus.svg}
+            alt={"add task"}
+            width={24}
+            height={24}
+            className=''
+          />
+        )}
       </div>
     </article>
   )
