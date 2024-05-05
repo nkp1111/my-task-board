@@ -25,7 +25,7 @@ const TaskValidationSchema = z.object({
 
 const GoalValidationSchema = z.object({
   name: z.string().min(1),
-  userId: z.string().uuid(),
+  // userId: z.string().uuid(),
   tasks: z.array(TaskValidationSchema)
 })
 
