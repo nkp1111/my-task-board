@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { iconsArray, defaultIconsArray } from '@/constant/sample-icons';
 import Image from 'next/image';
 import TaskFormStatus from './task-form-status';
+import { showAlert } from '@/lib/alert';
+import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/navigation';
 
 
 interface TaskFormTypeParams {
@@ -10,10 +13,23 @@ interface TaskFormTypeParams {
   taskFormOpen: boolean;
 }
 
+function getAllTasks(): TaskTypeParams[] {
+  return JSON.parse(localStorage.getItem("tasks") || "[]");
+}
+
+function getTaskById(taskId: string): TaskTypeParams | undefined {
+  const allTasks = getAllTasks();
+  const taskExist = allTasks.find((task: TaskTypeParams) => task._id === taskId);
+  return taskExist;
+}
+
 export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: TaskFormTypeParams) {
+  const router = useRouter();
+  const [cookies, setCookie] = useCookies(["goal_name", "tasks"]);
 
   // initialize task data
   const [taskDataInForm, setTaskDataInForm] = useState({
+    _id: Date.now().toString(),
     name: "",
     description: "",
     icon: "",
@@ -37,9 +53,10 @@ export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: Ta
   // update task data on change
   useEffect(() => {
     if (taskDataId) {
-      const allTasks: TaskTypeParams[] = JSON.parse(localStorage.getItem("tasks") || "[]");
-      const currentTask = allTasks.find(task => task._id === taskDataId);
+      const currentTask = getTaskById(taskDataId);
+      if (!currentTask) return;
       setTaskDataInForm(() => ({
+        _id: currentTask?._id || "",
         name: currentTask?.name || "",
         description: currentTask?.description || "",
         icon: currentTask?.icon || "",
@@ -49,15 +66,82 @@ export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: Ta
   }, [taskDataId]);
 
 
-  useEffect(() => {
-    console.log(taskDataInForm)
-    const allTasks: TaskTypeParams[] = JSON.parse(localStorage.getItem("tasks") || "[]");
-    const updatedTasks = allTasks.map(task => {
-      if (task._id === taskDataId) return { ...task, ...taskDataInForm };
-      else return task;
-    })
+  // useEffect(() => {
+  //   const allTasks: TaskTypeParams[] = getAllTasks();
+  //   const updatedTasks = allTasks.map(task => {
+  //     if (task._id === taskDataId) return { ...task, ...taskDataInForm };
+  //     else return task;
+  //   });
+  //   console.log('here updating tasks', updatedTasks);
+  //   localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  // }, [taskDataInForm, taskDataId]);
+
+
+
+  // save task to local storage as well as cookies
+  function updateAndSaveTask() {
+    const allTasks = getAllTasks();
+    const taskExist = getTaskById(taskDataInForm._id);
+    let updatedTasks = allTasks;
+    if (taskExist) {
+      // update old task
+      updatedTasks = allTasks.map((task: TaskTypeParams) => {
+        if (task._id === taskDataInForm._id) {
+          return { ...task, ...taskDataInForm }
+        }
+        return task;
+      })
+
+      showAlert("Task updated successfully", "success")
+    } else {
+      // save new task
+      if (!taskDataInForm.description || !taskDataInForm.status || !taskDataInForm.name || !taskDataInForm.icon) return;
+
+      updatedTasks = [
+        ...allTasks,
+        {
+          completedAt: "-",
+          createdAt: "-",
+          updatedAt: "-",
+          ...taskDataInForm,
+        }];
+
+      showAlert("Task added successfully", "success")
+    }
+
+    // save tasks in cookies
+    if (!cookies.tasks) {
+      setCookie("tasks", encodeURIComponent(JSON.stringify(updatedTasks)));
+    } else {
+      const allSavedTasks = JSON.parse(decodeURIComponent(cookies.tasks));
+      setCookie("tasks", encodeURIComponent(JSON.stringify([...allSavedTasks, { ...taskDataInForm }])));
+    }
+
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-  }, [taskDataInForm, taskDataId]);
+
+    closeTaskForm()
+    router.push("/")
+  }
+
+
+  // remove tasks from local storage as well as cookies
+  function removeTask(taskId: string) {
+    const allTasks = getAllTasks();
+    const taskExist = getTaskById(taskDataInForm._id);
+    if (!taskExist) return;
+
+    let updatedTasks = allTasks.filter((task: TaskTypeParams) => task._id !== taskDataInForm._id);
+
+    const allSavedTasks = JSON.parse(decodeURIComponent(cookies.tasks));
+    const updateSavedTasks = allSavedTasks.filter((task: TaskTypeParams) => task._id !== taskDataInForm._id);
+    setCookie("tasks", encodeURIComponent(JSON.stringify(updateSavedTasks)));
+
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    showAlert("Task removed successfully", "success")
+
+    closeTaskForm()
+    router.push("/")
+  }
 
 
   return (
@@ -140,7 +224,12 @@ export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: Ta
             <button
               type="button"
               aria-label='delete this task'
-              className='h-10 w-32 rounded-full bg-gray-500 text-white flex items-center justify-center gap-2'
+              className={`h-10 w-32 rounded-full bg-gray-500 text-white !flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-90 disabled:pointer-events-none disabled:tooltip`}
+              disabled={!taskDataId}
+              onClick={() => {
+                removeTask(taskDataInForm._id)
+              }}
+              data-tip={"First create the task to delete first!"}
             >
               <span>Delete</span>
               <Image
@@ -151,7 +240,12 @@ export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: Ta
             </button>
             <button
               type="button"
-              className='h-10 w-32 rounded-full bg-blue-600 text-white flex items-center justify-center gap-2' aria-label='save this task'>
+              className={`h-10 w-32 rounded-full bg-blue-600 text-white !flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-90 disabled:tooltip disabled:tooltip-top disabled:pointer-events-none`}
+              aria-label='save this task'
+              disabled={!taskDataInForm.description || !taskDataInForm.icon || !taskDataInForm.name || !taskDataInForm.status}
+              data-tip={"Please fill all fields"}
+              onClick={updateAndSaveTask}
+            >
               <span>Save</span>
               <Image
                 src={iconsArray[2].svg}

@@ -3,11 +3,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import editSvg from "@/public/assets/Edit_duotone.svg"
 import Image from "next/image";
+import { useCookies } from 'react-cookie';
 
 
 const BOARD_NAME = "My Task Board"
 
 export default function TaskBoardName() {
+  const [cookies, setCookie] = useCookies(["goal_name"]);
+
   const [editBoardName, setEditBoardName] = useState(false);
   const boardNameRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -22,6 +25,7 @@ export default function TaskBoardName() {
         // set default goal name
         boardNameRef.current.innerText = BOARD_NAME;
         localStorage.setItem("goal_name", BOARD_NAME);
+        setCookie("goal_name", BOARD_NAME);
       }
     }
   }, []);
@@ -53,8 +57,9 @@ export default function TaskBoardName() {
   useEffect(() => {
     if (!editBoardName && boardNameRef.current) {
       localStorage.setItem("goal_name", boardNameRef.current.innerText);
+      setCookie("goal_name", boardNameRef.current.innerText);
     }
-  }, [editBoardName]);
+  }, [editBoardName, setCookie]);
 
   return (
     <>

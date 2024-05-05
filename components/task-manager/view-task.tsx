@@ -19,7 +19,11 @@ export default function ViewTask({ goal }: { goal: GoalTypeParams }) {
     const newTask = tasks.find(task => task._id === taskId);
     if (newTask) setCurrentTaskId(newTask._id);
   }
-  const closeTaskForm = () => setTaskFormOpen(false);
+  const closeTaskForm = () => {
+    setTaskFormOpen(false);
+    const tasks = localStorage.getItem("tasks");
+    setTasks(() => JSON.parse(tasks || "[]"));
+  };
 
 
   useEffect(() => {
