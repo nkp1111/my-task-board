@@ -34,8 +34,13 @@ export default function ViewTask({ goal }: { goal: GoalTypeParams }) {
       if (goalName !== goal.name && (!tasks || !Array.isArray(JSON.parse(tasks)))) {
         localStorage.setItem("goal_name", goal.name);
         localStorage.setItem("tasks", JSON.stringify(goal.tasks));
+        setTasks(() => goal.tasks);
       } else {
-        setTasks(JSON.parse(tasks || "[]"));
+        if (tasks) {
+          setTasks(JSON.parse(tasks || "[]"));
+        } else {
+          setTasks(goal.tasks);
+        }
       }
     }
   }, []);

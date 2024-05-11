@@ -76,5 +76,7 @@ export const sampleGoal = {
       updatedAt: "",
       completedAt: "",
     },
-  ]
+  ],
+  updatedAt: "",
+  createdAt: "",
 }

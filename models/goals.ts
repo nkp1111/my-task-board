@@ -42,7 +42,11 @@ const GoalSchema = new Schema({
   },
   tasks: [
     TaskSchema,
-  ]
+  ],
+  finished: {
+    type: Schema.Types.Boolean,
+    default: false,
+  }
 }, {
   timestamps: true,
 })

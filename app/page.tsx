@@ -5,6 +5,7 @@ import { handleSaveGoal } from "@/lib/user/handleSaveGoal";
 
 
 export default function Home() {
+
   return (
     <main className="flex min-h-screen flex-col items-center bg-slate-50 py-2 md:px-16 sm:px-8 px-4">
       <div className="flex items-start gap-3">
