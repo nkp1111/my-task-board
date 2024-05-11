@@ -5,45 +5,22 @@ import React, { useEffect, useState } from 'react'
 import { iconsArray, defaultIconsArray } from "@/constant/sample-icons"
 import TaskForm from './task-form';
 import { statusArray } from '@/constant/sample-task';
-import { useCookies } from 'react-cookie';
+import useGlobalContext from '@/lib/general/context';
 
-export default function ViewTask({ goal }: { goal: GoalTypeParams }) {
+export default function ViewTask() {
 
-  // set goal and tasks data initially
-  const [cookies, setCookie] = useCookies(['goal_id']);
-  const [tasks, setTasks] = useState<TaskTypeParams[]>([]);
+  const { goal }: { goal: GoalTypeParams } = useGlobalContext();
   const [taskFormOpen, setTaskFormOpen] = useState(false);
   const [currentTaskId, setCurrentTaskId] = useState<string>("");
 
   const handleCurrentTask = (taskId: string) => {
-    const newTask = tasks.find(task => task._id === taskId);
+    const newTask = goal.tasks.find(task => task._id === taskId);
     if (newTask) setCurrentTaskId(newTask._id);
   }
+
   const closeTaskForm = () => {
     setTaskFormOpen(false);
-    const tasks = localStorage.getItem("tasks");
-    setTasks(() => JSON.parse(tasks || "[]"));
   };
-
-
-  useEffect(() => {
-    setCookie("goal_id", goal._id);
-    if (localStorage) {
-      const goalName = localStorage.getItem("goal_name");
-      const tasks = localStorage.getItem("tasks");
-      if (goalName !== goal.name && (!tasks || !Array.isArray(JSON.parse(tasks)))) {
-        localStorage.setItem("goal_name", goal.name);
-        localStorage.setItem("tasks", JSON.stringify(goal.tasks));
-        setTasks(() => goal.tasks);
-      } else {
-        if (tasks) {
-          setTasks(JSON.parse(tasks || "[]"));
-        } else {
-          setTasks(goal.tasks);
-        }
-      }
-    }
-  }, []);
 
   useEffect(() => {
     if (currentTaskId) {
@@ -56,11 +33,15 @@ export default function ViewTask({ goal }: { goal: GoalTypeParams }) {
   }, [taskFormOpen]);
 
 
+  if (!goal || !goal.tasks || !Array.isArray(goal.tasks)) {
+    return null;
+  }
+
   return (
     <div>
       <span className='hidden bg-yellow-300 bg-green-300 bg-red-300 bg-slate-300 bg-yellow-500 bg-green-500 bg-red-500 bg-slate-500'></span>
 
-      {tasks.map(task => {
+      {goal.tasks.map(task => {
         return <SingleTaskArticle
           key={task._id}
           task={task}

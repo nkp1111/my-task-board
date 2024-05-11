@@ -2,8 +2,7 @@
 
 import Image from 'next/image'
 import logoSvg from "@/public/assets/Logo.svg";
-import React, { useEffect, useState } from 'react'
-import { showAlert } from '@/lib/alert';
+import React from 'react'
 import useGlobalContext from '@/lib/general/context';
 
 

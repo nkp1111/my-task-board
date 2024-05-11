@@ -7,8 +7,9 @@ const AppContext = createContext<any>(null);
 
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(false);
-  const [allGoals, setAllGoals] = useState([]);
+  const [allGoals, setAllGoals] = useState<GoalTypeParams[]>([]);
   const [goal, setGoal] = useState({});
+
   useEffect(() => {
     fetch("/api/goals")
       .then(res => {
@@ -24,7 +25,6 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
           return;
         }
         if (data.goals) setAllGoals(data.goals);
-        if (data.goal) setGoal(data.goal);
       })
       .catch(err => {
         console.log(err);
@@ -32,7 +32,20 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
       })
   }, []);
 
+  useEffect(() => {
+    let goalStored = JSON.parse(localStorage.getItem("goal") || "{}");
+    if (goalStored && goalStored?._id) {
+      setGoal(goalStored);
+    } else {
+      // TODO: find latest active goal  <->
+      const activeGoalId = allGoals?.[0]?._id;
+      setGoalById(activeGoalId);
+    }
+
+  }, [allGoals]);
+
   const setGoalById = async (id: string) => {
+    if (!id) return;
     // params id: goal id
     // returns data: {goal}
     // desc: fetch goal by id
@@ -61,11 +74,17 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     }, 2000);
   }
 
+  useEffect(() => {
+    if (goal) localStorage.setItem("goal", JSON.stringify(goal));
+  }, [goal]);
+
+
   return (
     <AppContext.Provider
       value={{
         allGoals,
         goal,
+        setGoal,
         setGoalById,
         saveGoal,
         loading,

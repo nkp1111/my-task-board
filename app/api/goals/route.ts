@@ -18,10 +18,26 @@ export async function GET(request: NextRequest) {
     const user = await getJwtUser();
     if (!user || !user?._id) return NextResponse.json({ error: "User not signed in" }, { status: 400 });
 
-    const url = request.url;
-    console.log(url, "get request url here");
+    // get goal id
+    let goalId: string = "";
+    if (request.url.includes("?")) {
+      const searchParams = new URLSearchParams(request.url.split("?")[1]);
+      if (searchParams.has("id")) {
+        const searchId = searchParams.get("id")
+        if (searchId) goalId = decodeURIComponent(searchId);
+      }
+    }
 
-    // save user goal
+    // if goal id is there give goal by id
+    if (goalId) {
+      const goal = await Goal.findOne({ userId: user._id, _id: goalId });
+      return NextResponse.json({
+        success: "User goal fetched successfully",
+        goal,
+      }, { status: 200 })
+    }
+
+    // if goal id is not provided returns all goals
     const goals = await Goal.find({ userId: user._id })
       .sort({ updatedAt: -1 })
       .exec();
@@ -30,7 +46,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: "User goals fetched successfully",
       goals: formattedGoals,
-      goal: goals[0],
     }, { status: 200 })
 
   } catch (error) {
