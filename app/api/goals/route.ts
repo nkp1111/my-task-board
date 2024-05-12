@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     if (!user || !user?._id) return NextResponse.json({ error: "User not signed in" }, { status: 400 });
 
     const goalInfo = await request.json();
-
+    if (goalInfo?.completedAt) goalInfo.completedAt = "";
     // validate goal schema with userId
     const { success, error, data } = GoalValidationSchema.safeParse(goalInfo);
     if (error) return { error: validationErrorMessage(error) }
@@ -107,7 +107,7 @@ export async function PATCH(request: NextRequest) {
 
     console.log(goal, 'updated goal');
 
-    return NextResponse.json({ success: "Goal saved successfully", goal }, { status: 400 });
+    return NextResponse.json({ success: "Goal saved successfully", goal }, { status: 200 });
 
   } catch (error) {
     console.log(error)

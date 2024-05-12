@@ -89,9 +89,9 @@ export default function TaskForm({ taskFormOpen, closeTaskForm, tasks, taskDataI
       updatedTasks = [
         ...tasks,
         {
-          completedAt: "-",
-          createdAt: "-",
-          updatedAt: "-",
+          completedAt: "",
+          createdAt: "",
+          updatedAt: "",
           ...taskDataInForm,
         }];
 

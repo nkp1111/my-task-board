@@ -1,5 +1,6 @@
 "use client";
 
+import { sampleGoal } from '@/constant/sample-task';
 import { showAlert } from '@/lib/alert';
 import React, { createContext, useEffect, useState } from 'react'
 
@@ -11,7 +12,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [goal, setGoal] = useState<GoalTypeParams | null>(null);
 
   useEffect(() => {
-    fetch("/api/goals")
+    fetch("/api/goals", { credentials: "include" })
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -38,10 +39,13 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
       setGoal(goalStored);
     } else {
       // TODO: find latest active goal  <->
-      const activeGoalId = allGoals?.[0]?._id;
-      setGoalById(activeGoalId);
+      if (allGoals && allGoals.length > 0) {
+        const activeGoalId = allGoals?.[0]?._id;
+        setGoalById(activeGoalId);
+      } else {
+        setGoal(sampleGoal)
+      }
     }
-
   }, [allGoals]);
 
   const setGoalById = async (id: string) => {
@@ -49,7 +53,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     // params id: goal id
     // returns data: {goal}
     // desc: fetch goal by id
-    const res = await fetch("/api/goals?id=" + id);
+    const res = await fetch("/api/goals?id=" + id, { credentials: "include" });
     if (res.ok) {
       const data = await res.json();
       if (data.error) {
@@ -66,12 +70,70 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const saveGoal = () => {
     // save/update current goal to database
     // TODO: add logic for saving/updating goal
+    if (!goal) return;
     setLoading(() => true);
     showAlert("Saving goal...", "info");
-    setTimeout(() => {
-      showAlert("Goal saved!", "success");
-      setLoading(() => false);
-    }, 2000);
+    if (goal._id === "1") {
+      // save new goal
+      fetch("/api/goals", {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(goal),
+      })
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          throw new Error("Failed to create goal!");
+        })
+        .then(data => {
+          if (data.error) {
+            showAlert(data.error || "Something went wrong", "error");
+            setLoading(() => false);
+            return;
+          }
+          showAlert("New goal created", "success");
+          setLoading(() => false);
+        })
+        .catch(err => {
+          console.log(err);
+          showAlert(err || "Something went wrong", "error");
+          setLoading(() => false);
+        })
+    } else {
+      // update old goal
+      fetch("/api/goals", {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PATCH",
+        body: JSON.stringify(goal),
+      })
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          throw new Error("Failed to update goal");
+        })
+        .then(data => {
+          if (data.error) {
+            showAlert(data.error || "Something went wrong", "error");
+            setLoading(() => false);
+            return;
+          }
+          showAlert("Goal updated successfully", "success");
+          setLoading(() => false);
+        })
+        .catch(err => {
+          console.log(err);
+          showAlert(err || "Something went wrong", "error");
+          setLoading(() => false);
+        })
+    }
   }
 
   useEffect(() => {
