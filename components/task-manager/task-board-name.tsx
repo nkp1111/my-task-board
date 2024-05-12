@@ -3,71 +3,46 @@
 import React, { useEffect, useRef, useState } from 'react'
 import editSvg from "@/public/assets/Edit_duotone.svg"
 import Image from "next/image";
-import { useCookies } from 'react-cookie';
+import useGlobalContext from '@/lib/general/context';
 
 
 const BOARD_NAME = "My Task Board"
 
 export default function TaskBoardName() {
-  const [cookies, setCookie] = useCookies(["goal_name"]);
-
+  const { setGoal, goal } = useGlobalContext()
   const [editBoardName, setEditBoardName] = useState(false);
-  const boardNameRef = useRef<HTMLHeadingElement>(null);
-  useEffect(() => {
-    if (localStorage) {
-      const goalName = localStorage.getItem("goal_name");
-      if (!boardNameRef.current) return;
-      if (goalName) {
-        // set goal name
-        boardNameRef.current.innerText = goalName;
-      }
-      else {
-        // set default goal name
-        boardNameRef.current.innerText = BOARD_NAME;
-        localStorage.setItem("goal_name", BOARD_NAME);
-        setCookie("goal_name", BOARD_NAME);
-      }
-    }
-  }, []);
+  const boardNameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (editBoardName && boardNameRef.current) {
-      boardNameRef.current.focus();
-    }
+    if (editBoardName) boardNameRef?.current?.focus()
   }, [editBoardName]);
 
   useEffect(() => {
-    if (boardNameRef.current) {
-      boardNameRef.current.addEventListener("input", function (event) {
-        // if (event.key === "Enter") {
-        //   event.preventDefault();
-        //   // Optionally handle Enter key press here
-        //   return;
-        // }
-        const text = this.innerText.trim();
-        const charCount = text.length;
-
-        if (charCount > 25) {
-          this.innerText = text.slice(0, 25);
-        }
-      })
+    const input = boardNameRef.current;
+    if (input) {
+      const handleChange = (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        setGoal((pre: any) => ({ ...pre, name: target.value.slice(0, 14) }));
+      };
+      input.addEventListener("input", handleChange);
+      return () => {
+        input.removeEventListener("input", handleChange);
+      };
     }
-  }, [boardNameRef]);
-
-  useEffect(() => {
-    if (!editBoardName && boardNameRef.current) {
-      localStorage.setItem("goal_name", boardNameRef.current.innerText);
-      setCookie("goal_name", boardNameRef.current.innerText);
-    }
-  }, [editBoardName, setCookie]);
+  }, []);
 
   return (
     <>
       <div className="flex flex-col gap-3">
-        <h1 className="md:text-5xl text-4xl"
-          contentEditable={editBoardName}
-          ref={boardNameRef}
-        >
+        <h1 className="inline w-fit py-0">
+          <input
+            aria-label='Board name'
+            type="text"
+            className={`border-none outline-none !bg-transparent !p-0 h-full input md:text-5xl text-4xl !flex-shrink-0 disabled:text-black/90 max-w-80`}
+            ref={boardNameRef}
+            disabled={!editBoardName}
+            value={goal?.name}
+          />
         </h1>
         <p>Tasks to keep organized</p>
       </div>
@@ -76,7 +51,7 @@ export default function TaskBoardName() {
         <Image
           src={editSvg}
           alt={"Edit"}
-          className="w-8 h-8 mt-1"
+          className="w-8 h-8 mt-3"
         />
       </span>
     </>
