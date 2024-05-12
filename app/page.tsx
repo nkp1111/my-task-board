@@ -6,8 +6,8 @@ import TaskBoardName from "@/components/task-manager/task-board-name";
 export default function Home() {
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-slate-50 py-2 md:px-16 sm:px-8 px-4">
-      <div className="flex items-start gap-4">
+    <main className="flex flex-1 flex-col items-center bg-slate-50 py-2 md:px-16 sm:px-8 px-4 overflow-y-auto">
+      <div className="flex items-start sm:gap-4 gap-3">
         <div className="mt-3">
           <Logo />
         </div>

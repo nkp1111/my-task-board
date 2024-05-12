@@ -38,7 +38,7 @@ export default function TaskBoardName() {
           <input
             aria-label='Board name'
             type="text"
-            className={`border-none outline-none !bg-transparent !p-0 h-full input md:text-5xl text-4xl !flex-shrink-0 disabled:text-black/90 max-w-80`}
+            className={`border-none outline-none !bg-transparent !p-0 h-full input md:text-5xl [380px]:text-4xl text-3xl disabled:text-black/90 md:max-w-80 [380px]:max-w-60 max-w-52`}
             ref={boardNameRef}
             disabled={!editBoardName}
             defaultValue={goal?.name}

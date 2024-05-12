@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <AppProvider>
       <html lang="en" className="no-scrollbar">
-        <body className={outfit.className + " flex flex-col min-h-screen"}>
+        <body className={outfit.className + " flex flex-col min-h-screen overflow-hidden"}>
           <ToastContainer
             position="top-center"
             autoClose={3000}

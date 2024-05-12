@@ -5,7 +5,7 @@ import ViewTask from './view-task'
 export default function TaskManager() {
 
   return (
-    <div className='mt-5'>
+    <div className='my-5'>
       <ViewTask />
       <AddTask />
     </div>
