@@ -4,10 +4,13 @@ import React, { useState } from 'react'
 import plusIcon from "@/public/assets/Add_round_duotone.svg"
 import Image from 'next/image'
 import TaskForm from './task-form';
+import useGlobalContext from '@/lib/general/context';
 
 export default function AddTask() {
   const [taskFormOpen, setTaskFormOpen] = useState(false);
   const handleFormClose = () => setTaskFormOpen(false);
+  const { goal } = useGlobalContext();
+
   return (
     <div className='w-full'>
       <div className='w-full rounded-md p-5 flex items-center gap-5 bg-amber-100'
@@ -24,7 +27,11 @@ export default function AddTask() {
         <span className='font-bold text-lg'>Add new task</span>
       </div>
 
-      <TaskForm closeTaskForm={handleFormClose} taskFormOpen={taskFormOpen} />
+      <TaskForm
+        closeTaskForm={handleFormClose}
+        taskFormOpen={taskFormOpen}
+        tasks={goal?.tasks || []}
+      />
     </div>
   )
 }

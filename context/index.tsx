@@ -8,7 +8,7 @@ const AppContext = createContext<any>(null);
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [allGoals, setAllGoals] = useState<GoalTypeParams[]>([]);
-  const [goal, setGoal] = useState({});
+  const [goal, setGoal] = useState<GoalTypeParams | null>(null);
 
   useEffect(() => {
     fetch("/api/goals")

@@ -3,29 +3,19 @@ import { iconsArray, defaultIconsArray } from '@/constant/sample-icons';
 import Image from 'next/image';
 import TaskFormStatus from './task-form-status';
 import { showAlert } from '@/lib/alert';
-import { useCookies } from 'react-cookie';
-import { useRouter } from 'next/navigation';
+import useGlobalContext from '@/lib/general/context';
 
 
 interface TaskFormTypeParams {
   taskDataId?: string;
   closeTaskForm: () => void;
   taskFormOpen: boolean;
+  tasks: TaskTypeParams[];
 }
 
-function getAllTasks(): TaskTypeParams[] {
-  return JSON.parse(localStorage.getItem("tasks") || "[]");
-}
 
-function getTaskById(taskId: string): TaskTypeParams | undefined {
-  const allTasks = getAllTasks();
-  const taskExist = allTasks.find((task: TaskTypeParams) => task._id === taskId);
-  return taskExist;
-}
-
-export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: TaskFormTypeParams) {
-  const router = useRouter();
-  const [cookies, setCookie] = useCookies(["goal_name", "tasks"]);
+export default function TaskForm({ taskFormOpen, closeTaskForm, tasks, taskDataId }: TaskFormTypeParams) {
+  const { setGoal } = useGlobalContext()
 
   // initialize task data
   const [taskDataInForm, setTaskDataInForm] = useState({
@@ -53,7 +43,7 @@ export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: Ta
   // update task data on change
   useEffect(() => {
     if (taskDataId) {
-      const currentTask = getTaskById(taskDataId);
+      const currentTask = tasks?.find(task => task._id === taskDataId);
       if (!currentTask) return;
       setTaskDataInForm(() => ({
         _id: currentTask?._id || "",
@@ -63,34 +53,33 @@ export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: Ta
         status: currentTask?.status || "not started",
       }))
     }
-  }, [taskDataId]);
+  }, [taskDataId, tasks]);
 
 
-  // useEffect(() => {
-  //   const allTasks: TaskTypeParams[] = getAllTasks();
-  //   const updatedTasks = allTasks.map(task => {
-  //     if (task._id === taskDataId) return { ...task, ...taskDataInForm };
-  //     else return task;
-  //   });
-  //   console.log('here updating tasks', updatedTasks);
-  //   localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-  // }, [taskDataInForm, taskDataId]);
+  useEffect(() => {
+    const updatedTasks = tasks?.map(task => {
+      if (task._id === taskDataId) return { ...task, ...taskDataInForm };
+      else return task;
+    });
+    console.log('here updating tasks', updatedTasks);
+  }, [taskDataInForm, taskDataId, tasks]);
 
 
 
   // save task to local storage as well as cookies
   function updateAndSaveTask() {
-    const allTasks = getAllTasks();
-    const taskExist = getTaskById(taskDataInForm._id);
-    let updatedTasks = allTasks;
+    let updatedTasks = tasks;
+    const taskExist = tasks?.find(task => task._id === taskDataInForm._id);
     if (taskExist) {
       // update old task
-      updatedTasks = allTasks.map((task: TaskTypeParams) => {
+      updatedTasks = tasks?.map(task => {
         if (task._id === taskDataInForm._id) {
           return { ...task, ...taskDataInForm }
         }
         return task;
       })
+
+      setGoal((pre: any) => ({ ...pre, tasks: updatedTasks }))
 
       showAlert("Task updated successfully", "success")
     } else {
@@ -98,7 +87,7 @@ export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: Ta
       if (!taskDataInForm.description || !taskDataInForm.status || !taskDataInForm.name || !taskDataInForm.icon) return;
 
       updatedTasks = [
-        ...allTasks,
+        ...tasks,
         {
           completedAt: "-",
           createdAt: "-",
@@ -106,41 +95,26 @@ export default function TaskForm({ taskFormOpen, taskDataId, closeTaskForm }: Ta
           ...taskDataInForm,
         }];
 
+      setGoal((pre: any) => ({ ...pre, tasks: updatedTasks }))
+
       showAlert("Task added successfully", "success")
     }
 
-    // save tasks in cookies
-    if (!cookies.tasks) {
-      setCookie("tasks", encodeURIComponent(JSON.stringify(updatedTasks)));
-    } else {
-      const allSavedTasks = JSON.parse(decodeURIComponent(cookies.tasks));
-      setCookie("tasks", encodeURIComponent(JSON.stringify([...allSavedTasks, { ...taskDataInForm }])));
-    }
-
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-
-    closeTaskForm()
-    router.push("/")
+    closeTaskForm();
   }
 
 
   // remove tasks from local storage as well as cookies
   function removeTask(taskId: string) {
-    const allTasks = getAllTasks();
-    const taskExist = getTaskById(taskDataInForm._id);
+    const taskExist = tasks?.find(task => task._id === taskDataInForm._id);
     if (!taskExist) return;
 
-    let updatedTasks = allTasks.filter((task: TaskTypeParams) => task._id !== taskDataInForm._id);
+    let updatedTasks = tasks.filter(task => task._id !== taskDataInForm._id);
+    setGoal((pre: any) => ({ ...pre, tasks: [...updatedTasks] }));
 
-    const allSavedTasks = JSON.parse(decodeURIComponent(cookies.tasks));
-    const updateSavedTasks = allSavedTasks.filter((task: TaskTypeParams) => task._id !== taskDataInForm._id);
-    setCookie("tasks", encodeURIComponent(JSON.stringify(updateSavedTasks)));
-
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     showAlert("Task removed successfully", "success")
 
     closeTaskForm()
-    router.push("/")
   }
 
 

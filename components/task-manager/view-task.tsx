@@ -14,7 +14,7 @@ export default function ViewTask() {
   const [currentTaskId, setCurrentTaskId] = useState<string>("");
 
   const handleCurrentTask = (taskId: string) => {
-    const newTask = goal.tasks.find(task => task._id === taskId);
+    const newTask = goal?.tasks?.find(task => task._id === taskId);
     if (newTask) setCurrentTaskId(newTask._id);
   }
 
@@ -50,7 +50,7 @@ export default function ViewTask() {
         />
       })}
 
-      <TaskForm taskDataId={currentTaskId} closeTaskForm={closeTaskForm} taskFormOpen={taskFormOpen} />
+      <TaskForm taskDataId={currentTaskId} closeTaskForm={closeTaskForm} taskFormOpen={taskFormOpen} tasks={goal.tasks} />
     </div>
   )
 }
