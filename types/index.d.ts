@@ -44,6 +44,7 @@ type TaskTypeParams = {
 interface GoalTypeParams {
   name: string;
   _id: string;
+  userId?: string;
   tasks: TaskTypeParams[];
   createdAt: string;
   updatedAt: string;

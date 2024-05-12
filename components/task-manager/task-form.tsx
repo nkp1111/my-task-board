@@ -52,17 +52,24 @@ export default function TaskForm({ taskFormOpen, closeTaskForm, tasks, taskDataI
         icon: currentTask?.icon || "",
         status: currentTask?.status || "not started",
       }))
+    } else {
+      setTaskDataInForm(() => ({
+        _id: Date.now().toString(),
+        name: "",
+        description: "",
+        icon: "",
+        status: "not started",
+      }))
     }
   }, [taskDataId, tasks]);
 
 
-  useEffect(() => {
-    const updatedTasks = tasks?.map(task => {
-      if (task._id === taskDataId) return { ...task, ...taskDataInForm };
-      else return task;
-    });
-    console.log('here updating tasks', updatedTasks);
-  }, [taskDataInForm, taskDataId, tasks]);
+  // useEffect(() => {
+  //   const updatedTasks = tasks?.map(task => {
+  //     if (task._id === taskDataId) return { ...task, ...taskDataInForm };
+  //     else return task;
+  //   });
+  // }, [taskDataInForm, taskDataId, tasks]);
 
 
 

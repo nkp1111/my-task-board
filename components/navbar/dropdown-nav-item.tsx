@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavLink from './nav-links';
 import CloseIcon from '../svg/close-icon';
+import useGlobalContext from '@/lib/general/context';
 
 interface DropdownNavItemTypeParams {
   user: { [key: string]: any } | undefined,
@@ -14,6 +15,11 @@ export default function DropdownNavItem({ user, LogoutBtn }: DropdownNavItemType
   function closeNavItem() {
     setShowNavItem(() => false);
   }
+
+  const { setUserId } = useGlobalContext();
+  useEffect(() => {
+    if (user) setUserId(() => user?._id)
+  }, [setUserId, user]);
 
   return (
     <>

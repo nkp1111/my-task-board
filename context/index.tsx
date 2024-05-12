@@ -10,28 +10,37 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [allGoals, setAllGoals] = useState<GoalTypeParams[]>([]);
   const [goal, setGoal] = useState<GoalTypeParams | null>(null);
+  const [userId, setUserId] = useState("");
+
+  // useEffect(() => {
+  //   const goal = JSON.parse(localStorage.getItem("goal") || "{}")
+  //   if (goal && userId && goal.userId && goal.userId !== userId) localStorage.removeItem("goal");
+  // }, [userId]);
+
 
   useEffect(() => {
-    fetch("/api/goals", { credentials: "include" })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        showAlert("Failed to fetch goals!", "error");
-        throw new Error("Failed to fetch goals");
-      })
-      .then(data => {
-        if (data.error) {
-          showAlert(data.error || "Something went wrong", "error");
-          return;
-        }
-        if (data.goals) setAllGoals(data.goals);
-      })
-      .catch(err => {
-        console.log(err);
-        showAlert(err || "Something went wrong", "error");
-      })
-  }, []);
+    if (userId) {
+      fetch("/api/goals", { credentials: "include" })
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          }
+          showAlert("Failed to fetch goals!", "error");
+          throw new Error("Failed to fetch goals");
+        })
+        .then(data => {
+          if (data.error) {
+            showAlert(data.error || "Something went wrong", "error");
+            return;
+          }
+          if (data.goals) setAllGoals(data.goals);
+        })
+        .catch(err => {
+          console.log(err);
+          showAlert(err || "Something went wrong", "error");
+        })
+    }
+  }, [userId]);
 
   useEffect(() => {
     let goalStored = JSON.parse(localStorage.getItem("goal") || "{}");
@@ -49,7 +58,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   }, [allGoals]);
 
   const setGoalById = async (id: string) => {
-    if (!id) return;
+    if (!id || !userId) return;
     // params id: goal id
     // returns data: {goal}
     // desc: fetch goal by id
@@ -69,11 +78,14 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
   const saveGoal = () => {
     // save/update current goal to database
-    // TODO: add logic for saving/updating goal
     if (!goal) return;
+    if (!userId) {
+      showAlert("Please sign in first", "info");
+      return;
+    }
     setLoading(() => true);
     showAlert("Saving goal...", "info");
-    if (goal._id === "1") {
+    if (goal._id === "1" || goal._id.length !== 24) {
       // save new goal
       fetch("/api/goals", {
         credentials: "include",
@@ -95,12 +107,14 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
             setLoading(() => false);
             return;
           }
+
+          setGoal(data.goal);
           showAlert("New goal created", "success");
           setLoading(() => false);
         })
         .catch(err => {
           console.log(err);
-          showAlert(err || "Something went wrong", "error");
+          showAlert((err || "Something went wrong"), "error");
           setLoading(() => false);
         })
     } else {
@@ -130,16 +144,21 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
         })
         .catch(err => {
           console.log(err);
-          showAlert(err || "Something went wrong", "error");
+          showAlert((err || "Something went wrong"), "error");
           setLoading(() => false);
         })
     }
   }
 
+  // add goal changes to local storage
   useEffect(() => {
     if (goal) localStorage.setItem("goal", JSON.stringify(goal));
   }, [goal]);
 
+  // set current goal userId to signed in user
+  useEffect(() => {
+    if (userId && goal && !goal.userId) setGoal((pre: any) => ({ ...pre, userId }))
+  }, [goal, userId]);
 
   return (
     <AppContext.Provider
@@ -150,6 +169,8 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
         setGoalById,
         saveGoal,
         loading,
+        userId,
+        setUserId,
       }}
     >
       {children}

@@ -41,7 +41,7 @@ export default function TaskBoardName() {
             className={`border-none outline-none !bg-transparent !p-0 h-full input md:text-5xl text-4xl !flex-shrink-0 disabled:text-black/90 max-w-80`}
             ref={boardNameRef}
             disabled={!editBoardName}
-            value={goal?.name}
+            defaultValue={goal?.name}
           />
         </h1>
         <p>Tasks to keep organized</p>

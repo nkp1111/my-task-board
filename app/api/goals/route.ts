@@ -73,9 +73,8 @@ export async function POST(request: NextRequest) {
     if (error) return { error: validationErrorMessage(error) }
 
     const goal = await Goal.create({ ...data, userId: user._id });
-    console.log(goal, 'new goal created');
 
-    return NextResponse.json({ success: "Goal saved successfully", goal }, { status: 400 });
+    return NextResponse.json({ success: "Goal saved successfully", goal }, { status: 200 });
 
   } catch (error) {
     console.log(error)
@@ -105,8 +104,6 @@ export async function PATCH(request: NextRequest) {
       { userId: user._id },
       { $set: { tasks: data.tasks, goalName: data.name } });
 
-    console.log(goal, 'updated goal');
-
     return NextResponse.json({ success: "Goal saved successfully", goal }, { status: 200 });
 
   } catch (error) {
@@ -132,7 +129,7 @@ export async function DELETE(request: NextRequest) {
     const goal = await Goal.deleteOne({ userId: user?._id, _id: goalId });
     console.log(goal, 'deleted goal');
 
-    return NextResponse.json({ success: "Goal deleted successfully", goal }, { status: 400 });
+    return NextResponse.json({ success: "Goal deleted successfully", goal }, { status: 200 });
 
   } catch (error) {
     console.log(error)
