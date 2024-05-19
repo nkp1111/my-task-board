@@ -1,3 +1,4 @@
+import ControlBox from "@/components/control-box";
 import Logo from "@/components/logo"
 import TaskManager from "@/components/task-manager";
 import TaskBoardName from "@/components/task-manager/task-board-name";
@@ -18,6 +19,7 @@ export default function Home() {
         <TaskManager />
       </div>
 
+      <ControlBox />
     </main>
   );
 }

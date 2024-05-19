@@ -37,7 +37,7 @@ export default function RootLayout({
             pauseOnHover
             theme="light"
           />
-          <header className="relative z-40">
+          <header className="relative z-30">
             <Navbar />
           </header>
           {children}
