@@ -37,6 +37,7 @@ export default function ShowMoreGoals() {
           <div className='flex justify-between gap-2 items-center'>
             <h2 className='text-xl font-bold'>All Goals </h2>
             <span
+              className='cursor-pointer'
               onClick={handleShowGoals}
             ><CloseIcon /></span>
           </div>
@@ -89,6 +90,8 @@ export function DeleteGoal({ goalId }: { goalId: string }) {
   const [showModal, setShowModal] = useState(false);
   const handleModal = () => setShowModal(pre => !pre);
 
+  const { deleteGoal } = useGlobalContext();
+
   return (
     <span className='bg-error/80 rounded-full p-2 cursor-pointer relative'>
       <Image
@@ -108,7 +111,7 @@ export function DeleteGoal({ goalId }: { goalId: string }) {
           <button type="button" className='bg-slate-200 rounded-sm p-3'
             onClick={handleModal}>No, keep it</button>
           <button type="button" className='bg-error text-error-content rounded-sm p-3'
-            onClick={() => { console.log('deleting task') }}>Yes, delete it</button>
+            onClick={() => { deleteGoal(goalId) }}>Yes, delete it</button>
         </span>
       </aside>
     </span>

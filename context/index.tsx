@@ -160,6 +160,39 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     if (userId && goal && !goal.userId) setGoal((pre: any) => ({ ...pre, userId }))
   }, [goal, userId]);
 
+  // delete goal
+  const deleteGoal = (goalId: string) => {
+    fetch("/api/goals", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+      body: JSON.stringify({ goalId }),
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Failed to delete goal");
+      })
+      .then(data => {
+        if (data.error) {
+          showAlert(data.error || "Something went wrong", "error");
+          setLoading(() => false);
+          return;
+        }
+        showAlert("Goal deleted successfully", "success");
+        setLoading(() => false);
+        window.location.reload();
+      })
+      .catch(err => {
+        console.log(err);
+        showAlert((err || "Something went wrong"), "error");
+        setLoading(() => false);
+      })
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -171,6 +204,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
         loading,
         userId,
         setUserId,
+        deleteGoal,
       }}
     >
       {children}
