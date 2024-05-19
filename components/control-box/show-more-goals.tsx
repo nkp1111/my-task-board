@@ -3,14 +3,13 @@ import EyeCloseIcon from '../svg/eye-close-icon';
 import EyeIcon from '../svg/eye-icon';
 import CloseIcon from '../svg/close-icon';
 import useGlobalContext from '@/lib/general/context';
-import Link from 'next/link';
 import { iconsArray } from '@/constant/sample-icons';
 import Image from 'next/image';
 
 export default function ShowMoreGoals() {
   const [showGoals, setShowGoals] = useState(false);
   const handleShowGoals = () => setShowGoals(pre => !pre);
-  const { allGoals, setGoalById } = useGlobalContext();
+  const { allGoals, setGoalById, goal, addNewGoal } = useGlobalContext();
 
   useEffect(() => {
     if (showGoals) {
@@ -28,12 +27,12 @@ export default function ShowMoreGoals() {
         onClick={handleShowGoals}
         data-tip="Show Task List"
       >
-        {showGoals ? <EyeCloseIcon className='stroke-error-content' /> : <EyeIcon className='stroke-error-content' />}
+        {showGoals ? <EyeCloseIcon className='fill-error-content' /> : <EyeIcon className=' fill-error-content' />}
       </span>
 
 
       <article className={`fixed bg-black/50 z-50 ${showGoals ? "block" : "hidden"} top-0 left-0 right-0 bottom-0 grid place-items-center`}>
-        <div className='bg-white shadow-sm rounded-sm max-w-5xl mx-auto mt-16 p-10 w-full h-[calc(100vh-7rem)]'>
+        <div className='bg-white shadow-sm rounded-sm max-w-5xl mx-auto mt-16 p-10 w-full h-[calc(100vh-7rem)] no-scrollbar overflow-y-auto'>
           <div className='flex justify-between gap-2 items-center'>
             <h2 className='text-xl font-bold'>All Goals </h2>
             <span
@@ -46,7 +45,16 @@ export default function ShowMoreGoals() {
             goals={allGoals}
             setGoalById={setGoalById}
             handleShowGoals={handleShowGoals}
+            currentGoalId={goal?._id || ""}
           />
+
+          <button
+            type="button"
+            onClick={() => {
+              addNewGoal()
+            }}
+            className='btn btn-block mt-5 bg-primary text-primary-content text-lg hover:bg-primary/95'
+          >New Goal</button>
         </div>
       </article>
     </div>
@@ -56,8 +64,8 @@ export default function ShowMoreGoals() {
 
 
 export function RenderGoals(
-  { goals, setGoalById, handleShowGoals }:
-    { goals: GoalTypeParams[], setGoalById: (id: string) => Promise<any>, handleShowGoals: () => void }
+  { goals, setGoalById, handleShowGoals, currentGoalId }:
+    { goals: GoalTypeParams[], setGoalById: (id: string) => Promise<any>, handleShowGoals: () => void, currentGoalId: string }
 ) {
 
   if (!goals || goals.length === 0) return <p>No Task data available</p>
@@ -65,7 +73,7 @@ export function RenderGoals(
   return (
     <ul className='flex gap-3 flex-col *:border-b-2 *:border-gray-500 *:mt-5 *:py-2'>
       {goals.map((goal, index) => (
-        <li key={goal._id} className='flex gap-3 items-center'>
+        <li key={goal._id} className={`flex gap-3 items-center relative ${currentGoalId === goal._id ? "bg-slate-50 shadow-sm" : "bg-white"}`}>
           <span className='w-10'>#{index + 1}</span>
           <span>{goal._id.slice(-8)}</span>
           <span className='flex-1'>
@@ -110,8 +118,8 @@ export function DeleteGoal({ goalId, handleShowGoals }: { goalId: string, handle
         onClick={handleModal}
       />
 
-      <aside className={`${showModal ? "flex" : "hidden"} absolute right-full top-full gap-5 bg-slate-50 rounded-sm shadow-lg p-4 w-72 flex-col`}>
-        <span className='flex gap-1 flex-col'>
+      <aside className={`${showModal ? "flex" : "hidden"} absolute right-full top-full gap-5 bg-slate-100 rounded-sm shadow-lg p-4 w-72 flex-col z-50`}>
+        <span className='flex gap-1 flex-col bg-inherit'>
           <span className='text-lg'>{goalId.slice(-8)}</span>
           <span>Are you sure you want to delete this task?</span>
         </span>

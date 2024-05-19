@@ -17,6 +17,103 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   //   if (goal && userId && goal.userId && goal.userId !== userId) localStorage.removeItem("goal");
   // }, [userId]);
 
+  const saveNewGoal = (goal: GoalTypeParams) => {
+    fetch("/api/goals", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(goal),
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Failed to create goal!");
+      })
+      .then(data => {
+        if (data.error) {
+          showAlert(data.error || "Something went wrong", "error");
+          setLoading(() => false);
+          return;
+        }
+
+        setGoal(data.goal);
+        showAlert("New goal created", "success");
+        setLoading(() => false);
+      })
+      .catch(err => {
+        console.log(err);
+        showAlert((err || "Something went wrong"), "error");
+        setLoading(() => false);
+      })
+  }
+
+  const updateOldGoal = (goal: GoalTypeParams) => {
+    fetch("/api/goals", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PATCH",
+      body: JSON.stringify(goal),
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Failed to update goal");
+      })
+      .then(data => {
+        if (data.error) {
+          showAlert(data.error || "Something went wrong", "error");
+          setLoading(() => false);
+          return;
+        }
+        showAlert("Goal updated successfully", "success");
+        setLoading(() => false);
+      })
+      .catch(err => {
+        console.log(err);
+        showAlert((err || "Something went wrong"), "error");
+        setLoading(() => false);
+      })
+  }
+
+
+  // delete goal
+  const deleteGoal = (goalId: string) => {
+    fetch("/api/goals", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+      body: JSON.stringify({ goalId }),
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Failed to delete goal");
+      })
+      .then(data => {
+        if (data.error) {
+          showAlert(data.error || "Something went wrong", "error");
+          setLoading(() => false);
+          return;
+        }
+        showAlert("Goal deleted successfully", "success");
+        setLoading(() => false);
+        window.location.reload();
+      })
+      .catch(err => {
+        console.log(err);
+        showAlert((err || "Something went wrong"), "error");
+        setLoading(() => false);
+      })
+  }
 
   useEffect(() => {
     if (userId) {
@@ -87,66 +184,10 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     showAlert("Saving goal...", "info");
     if (goal._id === "1" || goal._id.length !== 24) {
       // save new goal
-      fetch("/api/goals", {
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(goal),
-      })
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          throw new Error("Failed to create goal!");
-        })
-        .then(data => {
-          if (data.error) {
-            showAlert(data.error || "Something went wrong", "error");
-            setLoading(() => false);
-            return;
-          }
-
-          setGoal(data.goal);
-          showAlert("New goal created", "success");
-          setLoading(() => false);
-        })
-        .catch(err => {
-          console.log(err);
-          showAlert((err || "Something went wrong"), "error");
-          setLoading(() => false);
-        })
+      saveNewGoal(goal)
     } else {
       // update old goal
-      fetch("/api/goals", {
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "PATCH",
-        body: JSON.stringify(goal),
-      })
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          throw new Error("Failed to update goal");
-        })
-        .then(data => {
-          if (data.error) {
-            showAlert(data.error || "Something went wrong", "error");
-            setLoading(() => false);
-            return;
-          }
-          showAlert("Goal updated successfully", "success");
-          setLoading(() => false);
-        })
-        .catch(err => {
-          console.log(err);
-          showAlert((err || "Something went wrong"), "error");
-          setLoading(() => false);
-        })
+      updateOldGoal(goal);
     }
   }
 
@@ -160,37 +201,19 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     if (userId && goal && !goal.userId) setGoal((pre: any) => ({ ...pre, userId }))
   }, [goal, userId]);
 
-  // delete goal
-  const deleteGoal = (goalId: string) => {
-    fetch("/api/goals", {
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-      body: JSON.stringify({ goalId }),
-    })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Failed to delete goal");
-      })
-      .then(data => {
-        if (data.error) {
-          showAlert(data.error || "Something went wrong", "error");
-          setLoading(() => false);
-          return;
-        }
-        showAlert("Goal deleted successfully", "success");
-        setLoading(() => false);
-        window.location.reload();
-      })
-      .catch(err => {
-        console.log(err);
-        showAlert((err || "Something went wrong"), "error");
-        setLoading(() => false);
-      })
+
+  const addNewGoal = () => {
+    console.log('adding new goal', allGoals)
+    const newGoal = {
+      name: "New Task Board",
+      _id: "1",
+      userId: "",
+      tasks: [],
+      createdAt: "",
+      updatedAt: "",
+    }
+    setGoal(newGoal);
+    saveNewGoal(newGoal);
   }
 
   return (
@@ -205,6 +228,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
         userId,
         setUserId,
         deleteGoal,
+        addNewGoal,
       }}
     >
       {children}
