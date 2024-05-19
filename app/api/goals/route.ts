@@ -101,8 +101,8 @@ export async function PATCH(request: NextRequest) {
     if (error) return { error: validationErrorMessage(error) }
 
     const goal = await Goal.updateOne(
-      { userId: user._id },
-      { $set: { tasks: data.tasks, goalName: data.name } });
+      { userId: user._id, _id: goalInfo._id },
+      { $set: { ...data } });
 
     return NextResponse.json({ success: "Goal saved successfully", goal }, { status: 200 });
 

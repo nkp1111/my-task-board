@@ -91,7 +91,7 @@ export default function TaskForm({ taskFormOpen, closeTaskForm, tasks, taskDataI
       showAlert("Task updated successfully", "success")
     } else {
       // save new task
-      if (!taskDataInForm.description || !taskDataInForm.status || !taskDataInForm.name || !taskDataInForm.icon) return;
+      if (!taskDataInForm.name && !taskDataInForm.icon) return;
 
       updatedTasks = [
         ...tasks,
