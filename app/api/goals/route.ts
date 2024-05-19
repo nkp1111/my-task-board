@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     if (goalInfo?.completedAt) goalInfo.completedAt = "";
     // validate goal schema with userId
     const { success, error, data } = GoalValidationSchema.safeParse(goalInfo);
-    if (error) return { error: validationErrorMessage(error) }
+    if (error) return NextResponse.json({ error: validationErrorMessage(error) }, { status: 400 })
 
     const goal = await Goal.create({ ...data, userId: user._id });
 
@@ -98,7 +98,7 @@ export async function PATCH(request: NextRequest) {
 
     // validate goal schema with userId
     const { success, error, data } = GoalValidationSchema.safeParse(goalInfo);
-    if (error) return { error: validationErrorMessage(error) }
+    if (error) return NextResponse.json({ error: validationErrorMessage(error) }, { status: 400 })
 
     const goal = await Goal.updateOne(
       { userId: user._id, _id: goalInfo._id },
@@ -122,12 +122,12 @@ export async function DELETE(request: NextRequest) {
     }
 
     const user = await getJwtUser();
-    if (!user || !user._id) NextResponse.json({ error: "User not signed in" }, { status: 400 });
+    if (!user || !user._id) return NextResponse.json({ error: "User not signed in" }, { status: 400 });
 
     const { goalId }: { goalId: string } = await request.json();
 
     const goal = await Goal.deleteOne({ userId: user?._id, _id: goalId });
-    console.log(goal, 'deleted goal');
+    // console.log(goal, 'deleted goal');
 
     return NextResponse.json({ success: "Goal deleted successfully", goal }, { status: 200 });
 
