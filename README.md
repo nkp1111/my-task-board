@@ -10,7 +10,6 @@ This project is about creating tasks, adding steps to completion, finding task a
 - [Usage](#usage)
 - [Folder Structure](#folder-structure)
 - [License](#license)
-- [Acknowledgement](#acknowledgement)
 - [Contact](#contact)
 
 ## Links
@@ -20,8 +19,14 @@ This project is about creating tasks, adding steps to completion, finding task a
 
 ## Features
 
-- User username and password for (jwt based)authentication.
+- jwt based authentication.
 - Daisy UI for consistent, pre-build styling based on tailwind css.
+- CRUD with tasks
+- saving tasks in database(mongodb) for users
+
+### Screenshot
+
+![image](./public/assets/Screenshot%202024-05-19%20202859.png)
 
 ## Technologies Used
 
@@ -56,7 +61,9 @@ npm run dev
 
 ## Usage
 
-- Coming soon...
+- Sign in to create account.
+- Able to save your tasks.
+- And access them with your username and password.
 
 ## Folder Structure
 
@@ -83,10 +90,6 @@ my-task-board/
 ## License
 
 - This project is licensed under the [MIT License](https://opensource.org/license/mit).
-
-## Acknowledgement
-
-- Coming soon...
 
 ## Contact
 
