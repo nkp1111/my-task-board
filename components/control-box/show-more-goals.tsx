@@ -10,7 +10,7 @@ import Image from 'next/image';
 export default function ShowMoreGoals() {
   const [showGoals, setShowGoals] = useState(false);
   const handleShowGoals = () => setShowGoals(pre => !pre);
-  const { allGoals } = useGlobalContext();
+  const { allGoals, setGoalById } = useGlobalContext();
 
   useEffect(() => {
     if (showGoals) {
@@ -42,7 +42,11 @@ export default function ShowMoreGoals() {
             ><CloseIcon /></span>
           </div>
 
-          <RenderGoals goals={allGoals} />
+          <RenderGoals
+            goals={allGoals}
+            setGoalById={setGoalById}
+            handleShowGoals={handleShowGoals}
+          />
         </div>
       </article>
     </div>
@@ -51,11 +55,12 @@ export default function ShowMoreGoals() {
 
 
 
-export function RenderGoals({ goals }: { goals: GoalTypeParams[] }) {
+export function RenderGoals(
+  { goals, setGoalById, handleShowGoals }:
+    { goals: GoalTypeParams[], setGoalById: (id: string) => Promise<any>, handleShowGoals: () => void }
+) {
 
   if (!goals || goals.length === 0) return <p>No Task data available</p>
-
-  console.log(goals)
 
   return (
     <ul className='flex gap-3 flex-col *:border-b-2 *:border-gray-500 *:mt-5 *:py-2'>
@@ -73,11 +78,14 @@ export function RenderGoals({ goals }: { goals: GoalTypeParams[] }) {
             </ol>
           </span>
           <span className='flex gap-3 items-center'>
-            <Link href={"/goals/" + goal._id} className='rounded-full border border-gray-500 p-1 shadow-sm hover:scale-105 transition-[scale] duration-300 ease-linear'>
+            <span className='rounded-full border border-gray-500 p-1 shadow-sm hover:scale-105 transition-[scale] duration-300 ease-linear cursor-pointer' onClick={() => {
+              setGoalById(goal._id)
+              handleShowGoals()
+            }}>
               <EyeIcon />
-            </Link>
+            </span>
 
-            <DeleteGoal goalId={goal._id} />
+            <DeleteGoal goalId={goal._id} handleShowGoals={handleShowGoals} />
           </span>
         </li>
       ))}
@@ -86,7 +94,7 @@ export function RenderGoals({ goals }: { goals: GoalTypeParams[] }) {
 }
 
 
-export function DeleteGoal({ goalId }: { goalId: string }) {
+export function DeleteGoal({ goalId, handleShowGoals }: { goalId: string, handleShowGoals: () => void }) {
   const [showModal, setShowModal] = useState(false);
   const handleModal = () => setShowModal(pre => !pre);
 
@@ -111,7 +119,11 @@ export function DeleteGoal({ goalId }: { goalId: string }) {
           <button type="button" className='bg-slate-200 rounded-sm p-3'
             onClick={handleModal}>No, keep it</button>
           <button type="button" className='bg-error text-error-content rounded-sm p-3'
-            onClick={() => { deleteGoal(goalId) }}>Yes, delete it</button>
+            onClick={() => {
+              deleteGoal(goalId);
+              handleModal();
+              handleShowGoals();
+            }}>Yes, delete it</button>
         </span>
       </aside>
     </span>
